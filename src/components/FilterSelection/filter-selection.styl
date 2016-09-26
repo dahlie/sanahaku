@@ -1,0 +1,21 @@
+@import '../../styles/_variables'
+
+.container {
+  background none
+}
+
+.filter {
+  color #fff
+  padding 15px 30px
+  display inline-block
+  background-color secondary-color
+  text-transform uppercase
+  margin 5px 10px 5px 0
+  font-size 0.875em
+  cursor pointer
+
+  &.disabled {
+    color disabled-text-color
+    background-color #ccc
+  }
+}
