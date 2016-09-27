@@ -52,7 +52,7 @@ class App extends Component {
   }
 
   @autobind
-  onFilter() {
+  onSearch() {
     this.clearResults();
     this.props.filterWords(this.props.selectedFilters);
   }
@@ -83,10 +83,11 @@ class App extends Component {
               filter={filter}
               onChange={this.onUpdateFilter}
               onRemove={this.onRemoveFilter}
+              onSearch={this.onSearch}
             />
           )}
 
-          <Results words={results} url={url} />
+          <Results words={results} url={url} maxResults={500} />
 
           {showHelp &&
           <div>
@@ -96,7 +97,7 @@ class App extends Component {
 
           {showSearch &&
           <div styleName="search">
-            <Button type="primary" onClick={this.onFilter}>Hae sanoja</Button>
+            <Button type="primary" onClick={this.onSearch}>Hae sanoja</Button>
           </div>
           }
         </div>

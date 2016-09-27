@@ -20,83 +20,62 @@ import {
 
 import styles from './filter.styl';
 
-const onSingleChange = (key, callback) =>
-  (e) =>
-    callback(key, last(e.target.value));
+const onSingleChange = (key, callback) => e => callback(key, last(e.target.value));
+
+const Input = ({ field, value = '', onChange, styles, ...rest }) => (
+  <input
+    autoFocus
+    value={value}
+    onChange={e => onChange(field, e.target.value)}
+    {...rest}
+  />
+);
 
 // Filter for words starting with a certain phrase
-const StartsWithFilter = CSSModules(({ opts, onChange }) => (
+const StartsWithFilter = CSSModules(({ opts, ...rest }) => (
   <div>
-    alkavat
-    <input
-      type="text"
-      value={opts.phrase || ''}
-      onChange={e => onChange('phrase', e.target.value)}
-    />
+    alkavat <Input field="phrase" value={opts.phrase} {...rest} />
   </div>
 ), styles);
 
 // Filter for words ending to a certain phrase
-const EndsWithFilter = CSSModules(({ opts, onChange }) => (
+const EndsWithFilter = CSSModules(({ opts, ...rest }) => (
   <div>
-    loppuvat
-    <input
-      type="text"
-      value={opts.phrase || ''}
-      onChange={e => onChange('phrase', e.target.value)}
-    />
+    loppuvat <Input field="phrase" value={opts.phrase} {...rest} />
   </div>
 ), styles);
 
 // Filter for words containing a certain phrase
-const ContainsFilter = CSSModules(({ opts, onChange }) => (
+const ContainsFilter = CSSModules(({ opts, ...rest }) => (
   <div>
-    sisältävät
-    <input
-      type="text"
-      value={opts.phrase || ''}
-      onChange={e => onChange('phrase', e.target.value)}
-    />
+    sisältävät <Input field="phrase" value={opts.phrase} {...rest} />
   </div>
 ), styles);
 
 // Filter for words rhyming with given word (levensthein distance 1)
-const RhymesWithFilter = CSSModules(({ opts, onChange }) => (
+const RhymesWithFilter = CSSModules(({ opts, ...rest }) => (
   <div>
-    ovat riimipareja sanan
-    <input
-      type="text"
-      value={opts.word || ''}
-      onChange={e => onChange('word', e.target.value)}
-    />
-    kanssa
+    ovat riimipareja sanan <Input field="word" value={opts.word} {...rest} /> kanssa
   </div>
 ), styles);
 
 // Filter for words containing double vowels
-const DoubleVowelFilter = CSSModules(({ opts, onChange }) => (
+const DoubleVowelFilter = CSSModules(() => (
   <div>
-    sisältää pitkän vokaalin
+    sisältävät minkä tahansa pitkän vokaalin
   </div>
 ), styles);
 
 // Filter for words containing double vowels
-const DoubleConsonantFilter = CSSModules(({ opts, onChange }) => (
+const DoubleConsonantFilter = CSSModules(() => (
   <div>
-    sisältää kaksoiskonsonantin
+    sisältävät minkä tahansa kaksoiskonsonantin
   </div>
 ), styles);
 
 const LengthFilter = (label) => CSSModules(({ opts, onChange }) => (
   <div>
-    {label}
-    <input
-      type="number"
-      styleName="small"
-      value={opts.length || ''}
-      onChange={e => onChange('length', parseInt(e.target.value, 10))}
-    />
-    merkkiä pitkiä
+    {label} <Input type="number" field="length" value={opts.length} styleName="small" {...rest} /> kirjainta pitkiä
   </div>
 ), styles);
 
@@ -149,7 +128,8 @@ class Filter extends Component {
 
     return React.cloneElement(component, {
       ...filter.toJS(),
-      onChange: this.onChange
+      onChange: this.onChange,
+      onKeyDown: e => e.keyCode === 13 && this.props.onSearch()
     });
   }
 
