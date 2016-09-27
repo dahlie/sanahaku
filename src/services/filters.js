@@ -29,8 +29,8 @@ const minLength = opts => word => word.length >= opts.length;
 const maxLength = opts => word => word.length <= opts.length;
 const exactLength = opts => word => word.length === opts.length;
 
-const createPredicate = ({ opts }) => {
-  switch (filter.type) {
+const createPredicate = ({ type, opts }) => {
+  switch (type) {
     case STARTS_WITH: return startsWith(opts);
     case ENDS_WITH: return endsWith(opts);
     case CONTAINS: return contains(opts);
@@ -61,9 +61,10 @@ const serializeFilter = (res, { type, opts }) => {
   return Object.assign(res, { [abbrevation]: value });
 };
 
-const deserializeFilter = (res, val, key) => res.concat({
+const deserializeFilter = (res, val, key, id) => res.concat({
   type: findTypeByAbbrevation(key),
   opts: FILTER_DESERIALIZERS[key](val),
+  id,
 });
 
 export const serialize = filters => reduce(serializeFilter, {})(filters);
