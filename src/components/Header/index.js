@@ -5,8 +5,10 @@ import styles from './header.styl';
 
 const Header = () => (
   <div styleName="container">
-    <div styleName="content">
-      <h1>sanahaku</h1>
+    <div styleName="wrapper">
+      <div styleName="content">
+        <h1>sanahaku</h1>
+      </div>
     </div>
   </div>
 );
