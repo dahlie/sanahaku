@@ -13,13 +13,11 @@ import Button from '../../components/Button';
 import { FILTER_TYPES } from '../../constants/filter-types';
 
 import { addFilter, updateFilter, removeFilter, loadFilters } from '../../concepts/filters';
-import { getResults, getResultUrl, filterWords, clearResults } from '../../concepts/results';
+import { isBusy, getResults, getResultUrl, filterWords, clearResults } from '../../concepts/results';
 
 import styles from './app.styl';
 
-@CSSModules(styles)
 class App extends Component {
-
   componentDidMount() {
     if (location.search) {
       this.props.loadFilters(location.search);
@@ -28,7 +26,7 @@ class App extends Component {
 
   clearResults() {
     const { results } = this.props;
-    if (!results.isEmpty()) {
+    if (results && !results.isEmpty()) {
       this.props.clearResults();
     }
   }
@@ -57,49 +55,67 @@ class App extends Component {
     this.props.filterWords(this.props.selectedFilters);
   }
 
+  @autobind
+  onSave() {
+    window.history.pushState('', '', `/?${this.props.url}`);
+  }
+
   render() {
-    const { selectedFilters, results, url } = this.props;
+    const { selectedFilters, results, url, isBusy } = this.props;
     const showHelp = selectedFilters.isEmpty();
-    const showSearch = !selectedFilters.isEmpty() && results.isEmpty();
+    const showSearch = !selectedFilters.isEmpty() && !results;
 
     return (
       <div styleName="app-container">
         <Header />
 
-        <div styleName="app-content">
-          <FilterSelection
-            filterTypes={FILTER_TYPES}
-            selected={selectedFilters}
-            onSelectFilter={this.onAddFilter}
-          />
-
-          {!selectedFilters.isEmpty() &&
-          <h2>Hae kaikki sanat, jotka...</h2>
-          }
-
-          {selectedFilters.map((filter, key) =>
-            <Filter
-              key={key}
-              filter={filter}
-              onChange={this.onUpdateFilter}
-              onRemove={this.onRemoveFilter}
-              onSearch={this.onSearch}
+        <div styleName="app-wrapper">
+          <div styleName="app-content">
+            <FilterSelection
+              filterTypes={FILTER_TYPES}
+              selected={selectedFilters}
+              onSelectFilter={this.onAddFilter}
             />
-          )}
 
-          <Results words={results} url={url} maxResults={500} />
+            {!selectedFilters.isEmpty() &&
+            <h2>Hae kaikki sanat, jotka...</h2>
+            }
 
-          {showHelp &&
-          <div>
-            <p>Aloita valitsemalla yksi tai useampi hakuehto.</p>
+            {selectedFilters.map((filter, key) =>
+              <Filter
+                key={key}
+                filter={filter}
+                onChange={this.onUpdateFilter}
+                onRemove={this.onRemoveFilter}
+                onSearch={this.onSearch}
+                disabled={isBusy}
+              />
+            )}
+
+            <Results
+              words={results}
+              currentUrl={location.search}
+              resultsUrl={url}
+              maxResults={500}
+              onSave={this.onSave}
+            />
+
+            {showHelp &&
+            <div>
+              <p>Aloita valitsemalla yksi tai useampi hakuehto.</p>
+            </div>
+            }
+
+            {showSearch &&
+            <div styleName="search">
+              <Button type="primary" onClick={this.onSearch}>{isBusy ? 'Etsitään sanoja...' : 'Hae sanoja'}</Button>
+            </div>
+            }
+
+            <div styleName="copyright">
+              &copy; 2016 Hannu Pousi - pousi@iki.fi
+            </div>
           </div>
-          }
-
-          {showSearch &&
-          <div styleName="search">
-            <Button type="primary" onClick={this.onSearch}>Hae sanoja</Button>
-          </div>
-          }
         </div>
       </div>
     );
@@ -109,9 +125,10 @@ class App extends Component {
 const mapStateToProps = createStructuredSelector({
   selectedFilters: state => state.get('filters'),
   results: getResults,
-  url: getResultUrl
+  url: getResultUrl,
+  isBusy
 });;
 
 const mapDispatchToProps = { addFilter, updateFilter, removeFilter, loadFilters, filterWords, clearResults };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(CSSModules(App, styles));

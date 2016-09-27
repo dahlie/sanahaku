@@ -1,6 +1,6 @@
 import Levenshtein from 'levenshtein';
 
-import fp, { map, identity, reduce, filter, find } from 'lodash/fp';
+import fp, { map, identity, reduce, filter, find, compact } from 'lodash/fp';
 import {
   findTypeByAbbrevation,
   FILTER_TYPES,
@@ -47,7 +47,7 @@ const createPredicate = ({ type, opts }) => {
 export function searchWords(words, filters) {
   const predicates = map(createPredicate)(filters);
   const reducer = reduce((res, predicate) => filter(predicate)(res), words);
-  return reducer(predicates);
+  return compact(reducer(predicates));
 }
 
 const serializeFilter = (res, { type, opts }) => {

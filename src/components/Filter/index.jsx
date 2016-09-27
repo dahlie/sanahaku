@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import CSSModules from 'react-css-modules';
 import autobind from 'autobind-decorator';
+import classnames from 'classnames';
 
 import Icon from '../Icon';
 
@@ -73,7 +74,7 @@ const DoubleConsonantFilter = CSSModules(() => (
   </div>
 ), styles);
 
-const LengthFilter = (label) => CSSModules(({ opts, onChange }) => (
+const LengthFilter = (label) => CSSModules(({ opts, ...rest }) => (
   <div>
     {label} <Input type="number" field="length" value={opts.length} styleName="small" {...rest} /> kirjainta pitkiä
   </div>
@@ -101,7 +102,7 @@ const FILTER_MAPPING = {
   [LENGTH_EXACT]: <ExactLengthFilter />
 };
 
-@CSSModules(styles, { allowMultiple: false })
+@CSSModules(styles, { allowMultiple: true })
 class Filter extends Component {
 
   static propTypes = {
@@ -125,19 +126,21 @@ class Filter extends Component {
   renderFilter(filter) {
     const type = filter.get('type');
     const component = FILTER_MAPPING[type] || <div/>;
+    const { onSearch, disabled } = this.props;
 
     return React.cloneElement(component, {
       ...filter.toJS(),
       onChange: this.onChange,
-      onKeyDown: e => e.keyCode === 13 && this.props.onSearch()
+      onKeyDown: e => e.keyCode === 13 && onSearch(),
+      disabled,
     });
   }
 
   render() {
-    const { filter } = this.props;
+    const { filter, disabled = false } = this.props;
 
     return (
-      <div styleName="filter">
+      <div styleName={classnames('filter', { disabled })}>
         {this.renderFilter(filter)}
         <RemoveButton onClick={this.onRemoveFilter} />
       </div>

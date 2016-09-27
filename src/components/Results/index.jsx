@@ -3,27 +3,44 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { List } from 'immutable';
 import CSSModules from 'react-css-modules';
 
+import Button from '../Button';
+
 import styles from './results.styl';
 
-const Results = ({ words, maxResults, url }) => !words.isEmpty() && (
-  <div>
-    <h2>Tulokset ({words.size > maxResults ? `${maxResults}+` : words.size} kpl)</h2>
+const Results = ({ words, maxResults, currentUrl, resultsUrl, onSave }) => {
+  if (!words) {
+    return null;
+  }
 
-    <div styleName="container">
-      {words.take(maxResults).toJS().join(', ')}
-      {words.size > maxResults && '...'}
-    </div>
+  if (words.isEmpty()) {
+    return (<div><h2>Ei osumia</h2></div>);
+  }
 
-    <div styleName="link">
-      <a href={`/?${url}`}>Tallennettu hakutulos</a>
+  return (
+    <div>
+      <h2>Tulokset ({words.size > maxResults ? `${maxResults}+` : words.size} kpl)</h2>
+
+      <div styleName="container">
+        {words.take(maxResults).toJS().join(', ')}
+        {words.size > maxResults && '...'}
+      </div>
+
+      <div styleName="buttons">
+        {currentUrl !== resultsUrl &&
+        <Button type="primary" onClick={onSave}>Tallenna hakutulos</Button>
+        }
+        {false && <Button type="primary">Uusi haku</Button>}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 Results.propTypes = {
   words: ImmutablePropTypes.list,
   maxResults: PropTypes.number,
-  url: PropTypes.string,
+  currentUrl: PropTypes.string,
+  resultsUrl: PropTypes.string,
+  onSave: PropTypes.func.isRequired,
 };
 
 Results.defaultProps = {

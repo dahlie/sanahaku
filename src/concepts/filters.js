@@ -3,6 +3,8 @@ import queryString from 'query-string';
 
 import { deserialize } from '../services/filters';
 
+import { filterWords } from './results';
+
 const ADD_FILTER = 'filters/ADD_FILTER';
 const LOAD_FILTERS = 'filters/LOAD_FILTERS';
 const REMOVE_FILTER = 'filters/REMOVE_FILTER';
@@ -67,7 +69,9 @@ export const updateFilter = (id, opts) => ({
   opts,
 });
 
-export const loadFilters = query => ({
-  type: LOAD_FILTERS,
-  filters: deserialize(queryString.parse(query)),
-});
+export const loadFilters = query => (dispatch) => {
+  const filters = deserialize(queryString.parse(query));
+
+  dispatch({ type: LOAD_FILTERS, filters });
+  dispatch(filterWords(fromJS(filters)));
+};
