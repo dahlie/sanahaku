@@ -10912,11 +10912,15 @@ webpackJsonp([1],[
 	    { styleName: 'container' },
 	    _react2.default.createElement(
 	      'div',
-	      { styleName: 'content' },
+	      { styleName: 'wrapper' },
 	      _react2.default.createElement(
-	        'h1',
-	        null,
-	        'sanahaku'
+	        'div',
+	        { styleName: 'content' },
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          'sanahaku'
+	        )
 	      )
 	    )
 	  );
@@ -11345,7 +11349,7 @@ webpackJsonp([1],[
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"container":"container__1MiTW","content":"content__2Qt1T"};
+	module.exports = {"container":"container__1MiTW","wrapper":"wrapper__eGhFu","content":"content__2Qt1T"};
 
 /***/ },
 /* 209 */

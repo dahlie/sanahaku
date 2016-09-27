@@ -1,15 +1,18 @@
 .container__1MiTW {
   background: #4484ce;
-  padding: 20px 30px;
+}
+.container__1MiTW .wrapper__eGhFu {
+  margin: 0 auto;
+  max-width: 800px;
 }
 .container__1MiTW .content__2Qt1T {
-  max-width: 800px;
-  margin: 0 auto;
+  margin: 0 20px;
+  padding: 20px 0;
 }
 .container__1MiTW h1 {
+  margin: 0;
   color: #fff;
   font-size: 2em;
-  margin: 0;
   font-weight: 300;
 }
 .container__25Dlf {
