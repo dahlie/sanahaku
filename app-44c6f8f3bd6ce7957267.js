@@ -32,7 +32,7 @@ webpackJsonp([1],[
 
 	var _filters2 = _interopRequireDefault(_filters);
 
-	var _words = __webpack_require__(64);
+	var _words = __webpack_require__(65);
 
 	var _words2 = _interopRequireDefault(_words);
 
@@ -5871,6 +5871,14 @@ webpackJsonp([1],[
 
 /***/ },
 /* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(357).runInContext();
+	module.exports = __webpack_require__(158)(_, _);
+
+
+/***/ },
+/* 56 */
 /***/ function(module, exports) {
 
 	/**
@@ -5897,14 +5905,14 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 56 */,
 /* 57 */,
 /* 58 */,
 /* 59 */,
 /* 60 */,
 /* 61 */,
 /* 62 */,
-/* 63 */
+/* 63 */,
+/* 64 */
 /***/ function(module, exports) {
 
 	/**
@@ -6013,7 +6021,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6025,6 +6033,8 @@ webpackJsonp([1],[
 	exports.default = reducer;
 	exports.filterWords = filterWords;
 
+	var _fp = __webpack_require__(55);
+
 	var _immutable = __webpack_require__(22);
 
 	var _queryString = __webpack_require__(161);
@@ -6035,7 +6045,10 @@ webpackJsonp([1],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var words = __webpack_require__(228);
+	var toLowerCase = function toLowerCase(s) {
+	  return s.toLowerCase();
+	};
+	var words = (0, _fp.map)(toLowerCase)(__webpack_require__(228));
 
 	var START_SEARCH = 'results/START_SEARCH';
 	var SEARCH_COMPLETE = 'results/SEARCH_COMPLETE';
@@ -6120,7 +6133,7 @@ webpackJsonp([1],[
 	};
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6128,11 +6141,11 @@ webpackJsonp([1],[
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.FILTER_DESERIALIZERS = exports.FILTER_SERIALIZERS = exports.ABBREVATIONS = exports.findTypeByAbbrevation = exports.FILTER_TYPES = exports.LENGTH_EXACT = exports.LENGTH_MAX = exports.LENGTH_MIN = exports.DOUBLE_CONSONANT = exports.DOUBLE_VOWEL = exports.RHYMES_WITH = exports.CONTAINS = exports.ENDS_WITH = exports.STARTS_WITH = undefined;
+	exports.FILTER_DESERIALIZERS = exports.FILTER_SERIALIZERS = exports.ABBREVATIONS = exports.findTypeByAbbrevation = exports.FILTER_TYPES = exports.LENGTH_EXACT = exports.LENGTH_MAX = exports.LENGTH_MIN = exports.DOUBLE_CONSONANT = exports.DOUBLE_VOWEL = exports.DOUBLE_LETTER = exports.RHYMES_WITH = exports.CONTAINS = exports.ENDS_WITH = exports.STARTS_WITH = undefined;
 
 	var _FILTER_SERIALIZERS, _FILTER_DESERIALIZERS;
 
-	var _fp = __webpack_require__(82);
+	var _fp = __webpack_require__(55);
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -6140,6 +6153,7 @@ webpackJsonp([1],[
 	var ENDS_WITH = exports.ENDS_WITH = 'ENDS_WITH';
 	var CONTAINS = exports.CONTAINS = 'CONTAINS';
 	var RHYMES_WITH = exports.RHYMES_WITH = 'RHYMES_WITH';
+	var DOUBLE_LETTER = exports.DOUBLE_LETTER = 'DOUBLE_LETTER';
 	var DOUBLE_VOWEL = exports.DOUBLE_VOWEL = 'DOUBLE_VOWEL';
 	var DOUBLE_CONSONANT = exports.DOUBLE_CONSONANT = 'DOUBLE_CONSONANT';
 	var LENGTH_MIN = exports.LENGTH_MIN = 'LENGTH_MIN';
@@ -6167,13 +6181,18 @@ webpackJsonp([1],[
 	  label: 'Riimipari',
 	  multiple: false
 	}, {
+	  type: DOUBLE_LETTER,
+	  abbrevation: 't',
+	  label: 'Tupla',
+	  multiple: false
+	}, {
 	  type: DOUBLE_VOWEL,
-	  abbrevation: 'tv',
+	  abbrevation: 'pv',
 	  label: 'Pitkä vokaali',
 	  multiple: false
 	}, {
 	  type: DOUBLE_CONSONANT,
-	  abbrevation: 'tk',
+	  abbrevation: 'kk',
 	  label: 'Kaksoiskonsonantti',
 	  multiple: false
 	}, {
@@ -6211,10 +6230,12 @@ webpackJsonp([1],[
 	  return opts.phrase;
 	}), _defineProperty(_FILTER_SERIALIZERS, RHYMES_WITH, function (opts) {
 	  return opts.phrase;
-	}), _defineProperty(_FILTER_SERIALIZERS, DOUBLE_VOWEL, function (opts) {
+	}), _defineProperty(_FILTER_SERIALIZERS, DOUBLE_LETTER, function (opts) {
 	  return opts.letters || '';
-	}), _defineProperty(_FILTER_SERIALIZERS, DOUBLE_CONSONANT, function (opts) {
-	  return opts.letters || '';
+	}), _defineProperty(_FILTER_SERIALIZERS, DOUBLE_VOWEL, function () {
+	  return '';
+	}), _defineProperty(_FILTER_SERIALIZERS, DOUBLE_CONSONANT, function () {
+	  return '';
 	}), _defineProperty(_FILTER_SERIALIZERS, LENGTH_MIN, function (opts) {
 	  return opts.length;
 	}), _defineProperty(_FILTER_SERIALIZERS, LENGTH_MAX, function (opts) {
@@ -6231,10 +6252,12 @@ webpackJsonp([1],[
 	  return { phrase: phrase };
 	}), _defineProperty(_FILTER_DESERIALIZERS, ABBREVATIONS[RHYMES_WITH], function (phrase) {
 	  return { phrase: phrase };
-	}), _defineProperty(_FILTER_DESERIALIZERS, ABBREVATIONS[DOUBLE_VOWEL], function (letters) {
+	}), _defineProperty(_FILTER_DESERIALIZERS, ABBREVATIONS[DOUBLE_LETTER], function (letters) {
 	  return { letters: letters };
-	}), _defineProperty(_FILTER_DESERIALIZERS, ABBREVATIONS[DOUBLE_CONSONANT], function (letters) {
-	  return { letters: letters };
+	}), _defineProperty(_FILTER_DESERIALIZERS, ABBREVATIONS[DOUBLE_VOWEL], function () {
+	  return {};
+	}), _defineProperty(_FILTER_DESERIALIZERS, ABBREVATIONS[DOUBLE_CONSONANT], function () {
+	  return {};
 	}), _defineProperty(_FILTER_DESERIALIZERS, ABBREVATIONS[LENGTH_MIN], function (length) {
 	  return { length: parseInt(length, 10) };
 	}), _defineProperty(_FILTER_DESERIALIZERS, ABBREVATIONS[LENGTH_MAX], function (length) {
@@ -6244,11 +6267,11 @@ webpackJsonp([1],[
 	}), _FILTER_DESERIALIZERS);
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseCreate = __webpack_require__(47),
-	    baseLodash = __webpack_require__(74);
+	    baseLodash = __webpack_require__(75);
 
 	/** Used as references for the maximum length and index of an array. */
 	var MAX_ARRAY_LENGTH = 4294967295;
@@ -6278,7 +6301,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var getNative = __webpack_require__(23),
@@ -6291,7 +6314,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var mapCacheClear = __webpack_require__(312),
@@ -6329,7 +6352,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ListCache = __webpack_require__(42),
@@ -6362,7 +6385,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports) {
 
 	/**
@@ -6388,7 +6411,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseAssignValue = __webpack_require__(124),
@@ -6422,7 +6445,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseFindIndex = __webpack_require__(244),
@@ -6448,12 +6471,12 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseMatches = __webpack_require__(256),
 	    baseMatchesProperty = __webpack_require__(257),
-	    identity = __webpack_require__(55),
+	    identity = __webpack_require__(56),
 	    isArray = __webpack_require__(8),
 	    property = __webpack_require__(360);
 
@@ -6485,7 +6508,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports) {
 
 	/**
@@ -6501,7 +6524,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Uint8Array = __webpack_require__(120);
@@ -6523,10 +6546,10 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignValue = __webpack_require__(71),
+	var assignValue = __webpack_require__(72),
 	    baseAssignValue = __webpack_require__(124);
 
 	/**
@@ -6569,7 +6592,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseSetData = __webpack_require__(131),
@@ -6682,7 +6705,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -6706,7 +6729,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports) {
 
 	/**
@@ -6727,7 +6750,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports) {
 
 	/** Used as the internal argument placeholder. */
@@ -6762,7 +6785,7 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseSetToString = __webpack_require__(260),
@@ -6779,14 +6802,6 @@ webpackJsonp([1],[
 	var setToString = shortOut(baseSetToString);
 
 	module.exports = setToString;
-
-
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var _ = __webpack_require__(357).runInContext();
-	module.exports = __webpack_require__(158)(_, _);
 
 
 /***/ },
@@ -7301,7 +7316,7 @@ webpackJsonp([1],[
 	  value: true
 	});
 
-	var _fp = __webpack_require__(82);
+	var _fp = __webpack_require__(55);
 
 	var _react = __webpack_require__(9);
 
@@ -7361,7 +7376,7 @@ webpackJsonp([1],[
 
 	var _filters = __webpack_require__(113);
 
-	var _words = __webpack_require__(64);
+	var _words = __webpack_require__(65);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7470,11 +7485,11 @@ webpackJsonp([1],[
 
 	var _levenshtein2 = _interopRequireDefault(_levenshtein);
 
-	var _fp = __webpack_require__(82);
+	var _fp = __webpack_require__(55);
 
 	var _fp2 = _interopRequireDefault(_fp);
 
-	var _filterTypes = __webpack_require__(65);
+	var _filterTypes = __webpack_require__(66);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7484,47 +7499,53 @@ webpackJsonp([1],[
 
 	var startsWith = function startsWith(opts) {
 	  return function (word) {
-	    return word.toLowerCase().startsWith(opts.phrase.toLowerCase());
+	    return word.startsWith(opts.phrase.toLowerCase());
 	  };
 	};
 	var endsWith = function endsWith(opts) {
 	  return function (word) {
-	    return word.toLowerCase().endsWith(opts.phrase.toLowerCase());
+	    return word.endsWith(opts.phrase.toLowerCase());
 	  };
 	};
 	var contains = function contains(opts) {
 	  return function (word) {
-	    return word.toLowerCase().indexOf(opts.phrase.toLowerCase()) !== -1;
+	    return word.indexOf(opts.phrase.toLowerCase()) !== -1;
 	  };
 	};
 	var rhymesWith = function rhymesWith(opts) {
 	  return function (word) {
-	    return new _levenshtein2.default(word.toLowerCase(), opts.word.toLowerCase()).distance === 1;
+	    return new _levenshtein2.default(word, opts.word.toLowerCase()).distance === 1;
+	  };
+	};
+	var doubleLetter = function doubleLetter(opts) {
+	  var matcher = new RegExp('([' + opts.letters + '])\\1');
+	  return function (word) {
+	    return word.match(matcher);
 	  };
 	};
 	var doubleVowel = function doubleVowel() {
 	  return function (word) {
-	    return word.toLowerCase().match(/([aeiouyöä])\1/);
+	    return word.match(/([aeiouyöä])\1/);
 	  };
 	};
 	var doubleConsonant = function doubleConsonant() {
 	  return function (word) {
-	    return word.toLowerCase().match(/([bcdfghjklmnpqrstv])\1/);
+	    return word.match(/([bcdfghjklmnpqrstv])\1/);
 	  };
 	};
 	var minLength = function minLength(opts) {
 	  return function (word) {
-	    return word.toLowerCase().length >= opts.length;
+	    return word.length >= opts.length;
 	  };
 	};
 	var maxLength = function maxLength(opts) {
 	  return function (word) {
-	    return word.toLowerCase().length <= opts.length;
+	    return word.length <= opts.length;
 	  };
 	};
 	var exactLength = function exactLength(opts) {
 	  return function (word) {
-	    return word.toLowerCase().length === opts.length;
+	    return word.length === opts.length;
 	  };
 	};
 
@@ -7541,6 +7562,8 @@ webpackJsonp([1],[
 	      return contains(opts);
 	    case _filterTypes.RHYMES_WITH:
 	      return rhymesWith(opts);
+	    case _filterTypes.DOUBLE_LETTER:
+	      return doubleLetter(opts);
 	    case _filterTypes.DOUBLE_VOWEL:
 	      return doubleVowel(opts);
 	    case _filterTypes.DOUBLE_CONSONANT:
@@ -7715,7 +7738,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseCreate = __webpack_require__(47),
-	    baseLodash = __webpack_require__(74);
+	    baseLodash = __webpack_require__(75);
 
 	/**
 	 * The base constructor for creating `lodash` wrapper objects.
@@ -7799,7 +7822,7 @@ webpackJsonp([1],[
 /* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var copyObject = __webpack_require__(76),
+	var copyObject = __webpack_require__(77),
 	    keys = __webpack_require__(25);
 
 	/**
@@ -7854,9 +7877,9 @@ webpackJsonp([1],[
 /* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Stack = __webpack_require__(69),
+	var Stack = __webpack_require__(70),
 	    arrayEach = __webpack_require__(45),
-	    assignValue = __webpack_require__(71),
+	    assignValue = __webpack_require__(72),
 	    baseAssign = __webpack_require__(123),
 	    cloneBuffer = __webpack_require__(267),
 	    copyArray = __webpack_require__(48),
@@ -8082,7 +8105,7 @@ webpackJsonp([1],[
 /* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isPrototype = __webpack_require__(78),
+	var isPrototype = __webpack_require__(79),
 	    nativeKeys = __webpack_require__(320);
 
 	/** Used for built-in method references. */
@@ -8118,9 +8141,9 @@ webpackJsonp([1],[
 /* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var identity = __webpack_require__(55),
+	var identity = __webpack_require__(56),
 	    overRest = __webpack_require__(150),
-	    setToString = __webpack_require__(81);
+	    setToString = __webpack_require__(82);
 
 	/**
 	 * The base implementation of `_.rest` which doesn't validate or coerce arguments.
@@ -8141,7 +8164,7 @@ webpackJsonp([1],[
 /* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var identity = __webpack_require__(55),
+	var identity = __webpack_require__(56),
 	    metaMap = __webpack_require__(149);
 
 	/**
@@ -8345,7 +8368,7 @@ webpackJsonp([1],[
 	    createRecurry = __webpack_require__(138),
 	    getHolder = __webpack_require__(142),
 	    reorder = __webpack_require__(323),
-	    replaceHolders = __webpack_require__(80),
+	    replaceHolders = __webpack_require__(81),
 	    root = __webpack_require__(10);
 
 	/** Used to compose bitmasks for function metadata. */
@@ -8639,7 +8662,7 @@ webpackJsonp([1],[
 /* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var overArg = __webpack_require__(79);
+	var overArg = __webpack_require__(80);
 
 	/** Built-in value references. */
 	var getPrototype = overArg(Object.getPrototypeOf, Object);
@@ -8651,7 +8674,7 @@ webpackJsonp([1],[
 /* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var overArg = __webpack_require__(79),
+	var overArg = __webpack_require__(80),
 	    stubArray = __webpack_require__(363);
 
 	/* Built-in method references for those with the same name as other `lodash` methods. */
@@ -8674,7 +8697,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	var DataView = __webpack_require__(230),
-	    Map = __webpack_require__(67),
+	    Map = __webpack_require__(68),
 	    Promise = __webpack_require__(232),
 	    Set = __webpack_require__(233),
 	    WeakMap = __webpack_require__(121),
@@ -8924,7 +8947,7 @@ webpackJsonp([1],[
 
 	var getWrapDetails = __webpack_require__(290),
 	    insertWrapDetails = __webpack_require__(301),
-	    setToString = __webpack_require__(81),
+	    setToString = __webpack_require__(82),
 	    updateWrapDetails = __webpack_require__(334);
 
 	/**
@@ -9061,11 +9084,11 @@ webpackJsonp([1],[
 /* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignValue = __webpack_require__(71),
-	    copyObject = __webpack_require__(76),
+	var assignValue = __webpack_require__(72),
+	    copyObject = __webpack_require__(77),
 	    createAssigner = __webpack_require__(277),
 	    isArrayLike = __webpack_require__(32),
-	    isPrototype = __webpack_require__(78),
+	    isPrototype = __webpack_require__(79),
 	    keys = __webpack_require__(25);
 
 	/** Used for built-in method references. */
@@ -10456,7 +10479,7 @@ webpackJsonp([1],[
 
 	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
 
-	var _autobindDecorator = __webpack_require__(63);
+	var _autobindDecorator = __webpack_require__(64);
 
 	var _autobindDecorator2 = _interopRequireDefault(_autobindDecorator);
 
@@ -10468,7 +10491,7 @@ webpackJsonp([1],[
 
 	var _Icon2 = _interopRequireDefault(_Icon);
 
-	var _filterTypes = __webpack_require__(65);
+	var _filterTypes = __webpack_require__(66);
 
 	var _filter = __webpack_require__(206);
 
@@ -10523,16 +10546,16 @@ webpackJsonp([1],[
 
 	var Input = function Input(_ref) {
 	  var field = _ref.field;
-	  var _ref$value = _ref.value;
-	  var value = _ref$value === undefined ? '' : _ref$value;
+	  var _ref$opts = _ref.opts;
+	  var opts = _ref$opts === undefined ? {} : _ref$opts;
 	  var _onChange = _ref.onChange;
 	  var styles = _ref.styles;
 
-	  var rest = _objectWithoutProperties(_ref, ['field', 'value', 'onChange', 'styles']);
+	  var rest = _objectWithoutProperties(_ref, ['field', 'opts', 'onChange', 'styles']);
 
 	  return _react2.default.createElement('input', _extends({
 	    autoFocus: true,
-	    value: value,
+	    value: opts[field] || '',
 	    onChange: function onChange(e) {
 	      return _onChange(field, e.target.value);
 	    }
@@ -10540,58 +10563,42 @@ webpackJsonp([1],[
 	};
 
 	// Filter for words starting with a certain phrase
-	var StartsWithFilter = (0, _reactCssModules2.default)(function (_ref2) {
-	  var opts = _ref2.opts;
-
-	  var rest = _objectWithoutProperties(_ref2, ['opts']);
-
+	var StartsWithFilter = (0, _reactCssModules2.default)(function (opts) {
 	  return _react2.default.createElement(
 	    'div',
 	    null,
 	    'alkavat ',
-	    _react2.default.createElement(Input, _extends({ field: 'phrase', value: opts.phrase }, rest))
+	    _react2.default.createElement(Input, _extends({ field: 'phrase' }, opts))
 	  );
 	}, _filter2.default);
 
 	// Filter for words ending to a certain phrase
-	var EndsWithFilter = (0, _reactCssModules2.default)(function (_ref3) {
-	  var opts = _ref3.opts;
-
-	  var rest = _objectWithoutProperties(_ref3, ['opts']);
-
+	var EndsWithFilter = (0, _reactCssModules2.default)(function (opts) {
 	  return _react2.default.createElement(
 	    'div',
 	    null,
 	    'loppuvat ',
-	    _react2.default.createElement(Input, _extends({ field: 'phrase', value: opts.phrase }, rest))
+	    _react2.default.createElement(Input, _extends({ field: 'phrase' }, opts))
 	  );
 	}, _filter2.default);
 
 	// Filter for words containing a certain phrase
-	var ContainsFilter = (0, _reactCssModules2.default)(function (_ref4) {
-	  var opts = _ref4.opts;
-
-	  var rest = _objectWithoutProperties(_ref4, ['opts']);
-
+	var ContainsFilter = (0, _reactCssModules2.default)(function (opts) {
 	  return _react2.default.createElement(
 	    'div',
 	    null,
 	    'sisältävät ',
-	    _react2.default.createElement(Input, _extends({ field: 'phrase', value: opts.phrase }, rest))
+	    _react2.default.createElement(Input, _extends({ field: 'phrase' }, opts))
 	  );
 	}, _filter2.default);
 
 	// Filter for words rhyming with given word (levensthein distance 1)
-	var RhymesWithFilter = (0, _reactCssModules2.default)(function (_ref5) {
-	  var opts = _ref5.opts;
-
-	  var rest = _objectWithoutProperties(_ref5, ['opts']);
-
+	var RhymesWithFilter = (0, _reactCssModules2.default)(function (opts) {
 	  return _react2.default.createElement(
 	    'div',
 	    null,
 	    'ovat riimipareja sanan ',
-	    _react2.default.createElement(Input, _extends({ field: 'word', value: opts.word }, rest)),
+	    _react2.default.createElement(Input, _extends({ field: 'word' }, opts)),
 	    ' kanssa'
 	  );
 	}, _filter2.default);
@@ -10614,18 +10621,25 @@ webpackJsonp([1],[
 	  );
 	}, _filter2.default);
 
+	// Filter for words containing two same consecutive characters
+	var DoubleLetterFilter = (0, _reactCssModules2.default)(function (opts) {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    'sisältävät jonkun kirjaimista ',
+	    _react2.default.createElement(Input, _extends({ field: 'letters' }, opts)),
+	    ' peräkkäin'
+	  );
+	}, _filter2.default);
+
 	var LengthFilter = function LengthFilter(label) {
-	  return (0, _reactCssModules2.default)(function (_ref6) {
-	    var opts = _ref6.opts;
-
-	    var rest = _objectWithoutProperties(_ref6, ['opts']);
-
+	  return (0, _reactCssModules2.default)(function (opts) {
 	    return _react2.default.createElement(
 	      'div',
 	      null,
 	      label,
 	      ' ',
-	      _react2.default.createElement(Input, _extends({ type: 'number', field: 'length', value: opts.length, styleName: 'small' }, rest)),
+	      _react2.default.createElement(Input, _extends({ type: 'number', field: 'length', styleName: 'small' }, opts)),
 	      ' kirjainta pitkiä'
 	    );
 	  }, _filter2.default);
@@ -10637,9 +10651,9 @@ webpackJsonp([1],[
 	var ExactLengthFilter = LengthFilter('ovat tasan');
 
 	// Remove filter button
-	var RemoveButton = function RemoveButton(_ref7) {
-	  var _onClick = _ref7.onClick;
-	  var id = _ref7.id;
+	var RemoveButton = function RemoveButton(_ref2) {
+	  var _onClick = _ref2.onClick;
+	  var id = _ref2.id;
 	  return _react2.default.createElement(
 	    'div',
 	    { style: { float: 'right', top: '-32px', position: 'relative' }, onClick: function onClick() {
@@ -10649,7 +10663,7 @@ webpackJsonp([1],[
 	  );
 	};
 
-	var FILTER_MAPPING = (_FILTER_MAPPING = {}, _defineProperty(_FILTER_MAPPING, _filterTypes.STARTS_WITH, _react2.default.createElement(StartsWithFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.ENDS_WITH, _react2.default.createElement(EndsWithFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.CONTAINS, _react2.default.createElement(ContainsFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.RHYMES_WITH, _react2.default.createElement(RhymesWithFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.DOUBLE_VOWEL, _react2.default.createElement(DoubleVowelFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.DOUBLE_CONSONANT, _react2.default.createElement(DoubleConsonantFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.LENGTH_MIN, _react2.default.createElement(MinLengthFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.LENGTH_MAX, _react2.default.createElement(MaxLengthFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.LENGTH_EXACT, _react2.default.createElement(ExactLengthFilter, null)), _FILTER_MAPPING);
+	var FILTER_MAPPING = (_FILTER_MAPPING = {}, _defineProperty(_FILTER_MAPPING, _filterTypes.STARTS_WITH, _react2.default.createElement(StartsWithFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.ENDS_WITH, _react2.default.createElement(EndsWithFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.CONTAINS, _react2.default.createElement(ContainsFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.RHYMES_WITH, _react2.default.createElement(RhymesWithFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.DOUBLE_LETTER, _react2.default.createElement(DoubleLetterFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.DOUBLE_VOWEL, _react2.default.createElement(DoubleVowelFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.DOUBLE_CONSONANT, _react2.default.createElement(DoubleConsonantFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.LENGTH_MIN, _react2.default.createElement(MinLengthFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.LENGTH_MAX, _react2.default.createElement(MaxLengthFilter, null)), _defineProperty(_FILTER_MAPPING, _filterTypes.LENGTH_EXACT, _react2.default.createElement(ExactLengthFilter, null)), _FILTER_MAPPING);
 
 	var Filter = (_dec = (0, _reactCssModules2.default)(_filter2.default, { allowMultiple: true }), _dec(_class = (_class2 = (_temp = _class3 = function (_Component) {
 	  _inherits(Filter, _Component);
@@ -10751,7 +10765,7 @@ webpackJsonp([1],[
 
 	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
 
-	var _autobindDecorator = __webpack_require__(63);
+	var _autobindDecorator = __webpack_require__(64);
 
 	var _autobindDecorator2 = _interopRequireDefault(_autobindDecorator);
 
@@ -11097,7 +11111,7 @@ webpackJsonp([1],[
 
 	var _reactCssModules2 = _interopRequireDefault(_reactCssModules);
 
-	var _autobindDecorator = __webpack_require__(63);
+	var _autobindDecorator = __webpack_require__(64);
 
 	var _autobindDecorator2 = _interopRequireDefault(_autobindDecorator);
 
@@ -11121,11 +11135,11 @@ webpackJsonp([1],[
 
 	var _Button2 = _interopRequireDefault(_Button);
 
-	var _filterTypes = __webpack_require__(65);
+	var _filterTypes = __webpack_require__(66);
 
 	var _filters = __webpack_require__(112);
 
-	var _words = __webpack_require__(64);
+	var _words = __webpack_require__(65);
 
 	var _app = __webpack_require__(211);
 
@@ -105763,7 +105777,7 @@ webpackJsonp([1],[
 /* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var MapCache = __webpack_require__(68),
+	var MapCache = __webpack_require__(69),
 	    setCacheAdd = __webpack_require__(324),
 	    setCacheHas = __webpack_require__(325);
 
@@ -105869,7 +105883,7 @@ webpackJsonp([1],[
 /* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIndexOf = __webpack_require__(72);
+	var baseIndexOf = __webpack_require__(73);
 
 	/**
 	 * A specialized version of `_.includes` for arrays without support for
@@ -106068,7 +106082,7 @@ webpackJsonp([1],[
 /* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayPush = __webpack_require__(70),
+	var arrayPush = __webpack_require__(71),
 	    isFlattenable = __webpack_require__(302);
 
 	/**
@@ -106156,7 +106170,7 @@ webpackJsonp([1],[
 /* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayPush = __webpack_require__(70),
+	var arrayPush = __webpack_require__(71),
 	    isArray = __webpack_require__(8);
 
 	/**
@@ -106229,7 +106243,7 @@ webpackJsonp([1],[
 /* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Stack = __webpack_require__(69),
+	var Stack = __webpack_require__(70),
 	    equalArrays = __webpack_require__(139),
 	    equalByTag = __webpack_require__(283),
 	    equalObjects = __webpack_require__(284),
@@ -106316,7 +106330,7 @@ webpackJsonp([1],[
 /* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Stack = __webpack_require__(69),
+	var Stack = __webpack_require__(70),
 	    baseIsEqual = __webpack_require__(128);
 
 	/** Used to compose bitmasks for comparison styles. */
@@ -106640,7 +106654,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	var constant = __webpack_require__(338),
-	    identity = __webpack_require__(55),
+	    identity = __webpack_require__(56),
 	    nativeDefineProperty = __webpack_require__(319);
 
 	/**
@@ -106769,7 +106783,7 @@ webpackJsonp([1],[
 /* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIndexOf = __webpack_require__(72);
+	var baseIndexOf = __webpack_require__(73);
 
 	/**
 	 * Used by `_.trim` and `_.trimEnd` to get the index of the last string symbol
@@ -106794,7 +106808,7 @@ webpackJsonp([1],[
 /* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIndexOf = __webpack_require__(72);
+	var baseIndexOf = __webpack_require__(73);
 
 	/**
 	 * Used by `_.trim` and `_.trimStart` to get the index of the first string symbol
@@ -106844,7 +106858,7 @@ webpackJsonp([1],[
 /* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var cloneArrayBuffer = __webpack_require__(75);
+	var cloneArrayBuffer = __webpack_require__(76);
 
 	/**
 	 * Creates a clone of `dataView`.
@@ -106963,7 +106977,7 @@ webpackJsonp([1],[
 /* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var cloneArrayBuffer = __webpack_require__(75);
+	var cloneArrayBuffer = __webpack_require__(76);
 
 	/**
 	 * Creates a clone of `typedArray`.
@@ -106985,7 +106999,7 @@ webpackJsonp([1],[
 /* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var copyObject = __webpack_require__(76),
+	var copyObject = __webpack_require__(77),
 	    getSymbols = __webpack_require__(144);
 
 	/**
@@ -107197,7 +107211,7 @@ webpackJsonp([1],[
 	    createHybrid = __webpack_require__(137),
 	    createRecurry = __webpack_require__(138),
 	    getHolder = __webpack_require__(142),
-	    replaceHolders = __webpack_require__(80),
+	    replaceHolders = __webpack_require__(81),
 	    root = __webpack_require__(10);
 
 	/**
@@ -107510,7 +107524,7 @@ webpackJsonp([1],[
 
 	var flatten = __webpack_require__(341),
 	    overRest = __webpack_require__(150),
-	    setToString = __webpack_require__(81);
+	    setToString = __webpack_require__(82);
 
 	/**
 	 * A specialized version of `baseRest` which flattens the rest array.
@@ -107907,7 +107921,7 @@ webpackJsonp([1],[
 /* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var cloneArrayBuffer = __webpack_require__(75),
+	var cloneArrayBuffer = __webpack_require__(76),
 	    cloneDataView = __webpack_require__(268),
 	    cloneMap = __webpack_require__(269),
 	    cloneRegExp = __webpack_require__(270),
@@ -107995,7 +108009,7 @@ webpackJsonp([1],[
 
 	var baseCreate = __webpack_require__(47),
 	    getPrototype = __webpack_require__(143),
-	    isPrototype = __webpack_require__(78);
+	    isPrototype = __webpack_require__(79);
 
 	/**
 	 * Initializes an object clone.
@@ -108129,7 +108143,7 @@ webpackJsonp([1],[
 /* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var LazyWrapper = __webpack_require__(66),
+	var LazyWrapper = __webpack_require__(67),
 	    getData = __webpack_require__(141),
 	    getFuncName = __webpack_require__(287),
 	    lodash = __webpack_require__(369);
@@ -108330,7 +108344,7 @@ webpackJsonp([1],[
 
 	var Hash = __webpack_require__(231),
 	    ListCache = __webpack_require__(42),
-	    Map = __webpack_require__(67);
+	    Map = __webpack_require__(68);
 
 	/**
 	 * Removes all key-value entries from the map.
@@ -108485,7 +108499,7 @@ webpackJsonp([1],[
 
 	var composeArgs = __webpack_require__(135),
 	    composeArgsRight = __webpack_require__(136),
-	    replaceHolders = __webpack_require__(80);
+	    replaceHolders = __webpack_require__(81);
 
 	/** Used as the internal argument placeholder. */
 	var PLACEHOLDER = '__lodash_placeholder__';
@@ -108591,7 +108605,7 @@ webpackJsonp([1],[
 /* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var overArg = __webpack_require__(79);
+	var overArg = __webpack_require__(80);
 
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeKeys = overArg(Object.keys, Object);
@@ -108808,8 +108822,8 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	var ListCache = __webpack_require__(42),
-	    Map = __webpack_require__(67),
-	    MapCache = __webpack_require__(68);
+	    Map = __webpack_require__(68),
+	    MapCache = __webpack_require__(69);
 
 	/** Used as the size to enable large array optimizations. */
 	var LARGE_ARRAY_SIZE = 200;
@@ -108996,7 +109010,7 @@ webpackJsonp([1],[
 /* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var LazyWrapper = __webpack_require__(66),
+	var LazyWrapper = __webpack_require__(67),
 	    LodashWrapper = __webpack_require__(119),
 	    copyArray = __webpack_require__(48);
 
@@ -109025,7 +109039,7 @@ webpackJsonp([1],[
 /* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createWrap = __webpack_require__(77);
+	var createWrap = __webpack_require__(78);
 
 	/** Used to compose bitmasks for function metadata. */
 	var ARY_FLAG = 128;
@@ -109131,7 +109145,7 @@ webpackJsonp([1],[
 /* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createWrap = __webpack_require__(77);
+	var createWrap = __webpack_require__(78);
 
 	/** Used to compose bitmasks for function metadata. */
 	var CURRY_FLAG = 8;
@@ -109196,7 +109210,7 @@ webpackJsonp([1],[
 
 	var arrayFilter = __webpack_require__(237),
 	    baseFilter = __webpack_require__(243),
-	    baseIteratee = __webpack_require__(73),
+	    baseIteratee = __webpack_require__(74),
 	    isArray = __webpack_require__(8);
 
 	/**
@@ -109279,7 +109293,7 @@ webpackJsonp([1],[
 
 	var arrayEach = __webpack_require__(45),
 	    baseEach = __webpack_require__(126),
-	    baseIteratee = __webpack_require__(73),
+	    baseIteratee = __webpack_require__(74),
 	    isArray = __webpack_require__(8);
 
 	/**
@@ -110035,7 +110049,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseClone = __webpack_require__(125),
-	    baseIteratee = __webpack_require__(73);
+	    baseIteratee = __webpack_require__(74);
 
 	/**
 	 * Creates a function that invokes `func` with the arguments of the created
@@ -110254,7 +110268,7 @@ webpackJsonp([1],[
 /* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var MapCache = __webpack_require__(68);
+	var MapCache = __webpack_require__(69);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -110394,7 +110408,7 @@ webpackJsonp([1],[
 /* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createWrap = __webpack_require__(77),
+	var createWrap = __webpack_require__(78),
 	    flatRest = __webpack_require__(285);
 
 	/** Used to compose bitmasks for function metadata. */
@@ -110434,7 +110448,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	var apply = __webpack_require__(44),
-	    arrayPush = __webpack_require__(70),
+	    arrayPush = __webpack_require__(71),
 	    baseRest = __webpack_require__(130),
 	    castSlice = __webpack_require__(134),
 	    toInteger = __webpack_require__(86);
@@ -110768,9 +110782,9 @@ webpackJsonp([1],[
 /* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var LazyWrapper = __webpack_require__(66),
+	var LazyWrapper = __webpack_require__(67),
 	    LodashWrapper = __webpack_require__(119),
-	    baseLodash = __webpack_require__(74),
+	    baseLodash = __webpack_require__(75),
 	    isArray = __webpack_require__(8),
 	    isObjectLike = __webpack_require__(24),
 	    wrapperClone = __webpack_require__(335);
