@@ -32,15 +32,15 @@ webpackJsonp([1],[
 
 	var _filters2 = _interopRequireDefault(_filters);
 
-	var _results = __webpack_require__(64);
+	var _words = __webpack_require__(64);
 
-	var _results2 = _interopRequireDefault(_results);
+	var _words2 = _interopRequireDefault(_words);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var rootReducer = (0, _reduxImmutable.combineReducers)({
 	  filters: _filters2.default,
-	  results: _results2.default
+	  words: _words2.default
 	});
 
 	__webpack_require__(212);
@@ -51,7 +51,10 @@ webpackJsonp([1],[
 	// Not in production mode so activate some dev tools
 	if (false) {
 	  require('immutable-devtools')(_immutable2.default);
-	  enhancer = (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default), window.devToolsExtension && window.devToolsExtension());
+
+	  if (window.devToolsExtension) {
+	    enhancer = (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default), window.devToolsExtension && window.devToolsExtension());
+	  }
 	}
 
 	var store = (0, _redux.createStore)(rootReducer, new _immutable.Map(), enhancer);
@@ -6041,25 +6044,25 @@ webpackJsonp([1],[
 	// Initial state
 	var initialState = (0, _immutable.fromJS)({
 	  filtering: false,
-	  words: null,
+	  results: null,
 	  url: null
 	});
 
 	// Selectors
 	var getResultCount = exports.getResultCount = function getResultCount(state) {
-	  return state.getIn(['results', 'words', 'length'], 0);
+	  return state.getIn(['words', 'results', 'length'], 0);
 	};
 
 	var getResults = exports.getResults = function getResults(state) {
-	  return state.getIn(['results', 'words'], new _immutable.List());
+	  return state.getIn(['words', 'results'], new _immutable.List());
 	};
 
 	var getResultUrl = exports.getResultUrl = function getResultUrl(state) {
-	  return state.getIn(['results', 'url']);
+	  return state.getIn(['words', 'url']);
 	};
 
 	var isBusy = exports.isBusy = function isBusy(state) {
-	  return state.getIn(['results', 'filtering']);
+	  return state.getIn(['words', 'filtering']);
 	};
 
 	// Reducer
@@ -6076,7 +6079,7 @@ webpackJsonp([1],[
 	    case SEARCH_COMPLETE:
 	      {
 	        return (0, _immutable.fromJS)({
-	          words: action.results,
+	          results: action.results,
 	          url: action.url,
 	          filtering: false
 	        });
@@ -7358,7 +7361,7 @@ webpackJsonp([1],[
 
 	var _filters = __webpack_require__(113);
 
-	var _results = __webpack_require__(64);
+	var _words = __webpack_require__(64);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7447,7 +7450,7 @@ webpackJsonp([1],[
 	    var filters = (0, _filters.deserialize)(_queryString2.default.parse(query));
 
 	    dispatch({ type: LOAD_FILTERS, filters: filters });
-	    dispatch((0, _results.filterWords)((0, _immutable.fromJS)(filters)));
+	    dispatch((0, _words.filterWords)((0, _immutable.fromJS)(filters)));
 	  };
 	};
 
@@ -7481,47 +7484,47 @@ webpackJsonp([1],[
 
 	var startsWith = function startsWith(opts) {
 	  return function (word) {
-	    return word.startsWith(opts.phrase);
+	    return word.toLowerCase().startsWith(opts.phrase.toLowerCase());
 	  };
 	};
 	var endsWith = function endsWith(opts) {
 	  return function (word) {
-	    return word.endsWith(opts.phrase);
+	    return word.toLowerCase().endsWith(opts.phrase.toLowerCase());
 	  };
 	};
 	var contains = function contains(opts) {
 	  return function (word) {
-	    return word.indexOf(opts.phrase) !== -1;
+	    return word.toLowerCase().indexOf(opts.phrase.toLowerCase()) !== -1;
 	  };
 	};
 	var rhymesWith = function rhymesWith(opts) {
 	  return function (word) {
-	    return new _levenshtein2.default(opts.word, word).distance === 1;
+	    return new _levenshtein2.default(word.toLowerCase(), opts.word.toLowerCase()).distance === 1;
 	  };
 	};
 	var doubleVowel = function doubleVowel() {
 	  return function (word) {
-	    return word.match(/([aeiouyöä])\1/);
+	    return word.toLowerCase().match(/([aeiouyöä])\1/);
 	  };
 	};
 	var doubleConsonant = function doubleConsonant() {
 	  return function (word) {
-	    return word.match(/([bcdfghjklmnpqrstv])\1/);
+	    return word.toLowerCase().match(/([bcdfghjklmnpqrstv])\1/);
 	  };
 	};
 	var minLength = function minLength(opts) {
 	  return function (word) {
-	    return word.length >= opts.length;
+	    return word.toLowerCase().length >= opts.length;
 	  };
 	};
 	var maxLength = function maxLength(opts) {
 	  return function (word) {
-	    return word.length <= opts.length;
+	    return word.toLowerCase().length <= opts.length;
 	  };
 	};
 	var exactLength = function exactLength(opts) {
 	  return function (word) {
-	    return word.length === opts.length;
+	    return word.toLowerCase().length === opts.length;
 	  };
 	};
 
@@ -11122,7 +11125,7 @@ webpackJsonp([1],[
 
 	var _filters = __webpack_require__(112);
 
-	var _results = __webpack_require__(64);
+	var _words = __webpack_require__(64);
 
 	var _app = __webpack_require__(211);
 
@@ -11307,12 +11310,12 @@ webpackJsonp([1],[
 	  selectedFilters: function selectedFilters(state) {
 	    return state.get('filters');
 	  },
-	  results: _results.getResults,
-	  url: _results.getResultUrl,
-	  isBusy: _results.isBusy
+	  results: _words.getResults,
+	  url: _words.getResultUrl,
+	  isBusy: _words.isBusy
 	});;
 
-	var mapDispatchToProps = { addFilter: _filters.addFilter, updateFilter: _filters.updateFilter, removeFilter: _filters.removeFilter, loadFilters: _filters.loadFilters, filterWords: _results.filterWords, clearResults: _results.clearResults };
+	var mapDispatchToProps = { addFilter: _filters.addFilter, updateFilter: _filters.updateFilter, removeFilter: _filters.removeFilter, loadFilters: _filters.loadFilters, filterWords: _words.filterWords, clearResults: _words.clearResults };
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _reactCssModules2.default)(App, _app2.default));
 
@@ -11328,7 +11331,7 @@ webpackJsonp([1],[
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"button":"button__3kyux","normal":"normal__2slUd","primary":"primary__Gi0WT"};
+	module.exports = {"button":"button__3kyux","normal":"normal__2slUd","primary":"primary__Gi0WT","filter":"filter__3yCM8"};
 
 /***/ },
 /* 206 */

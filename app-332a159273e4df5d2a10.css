@@ -3,7 +3,7 @@
 }
 .container__1MiTW .wrapper__eGhFu {
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 728px;
 }
 .container__1MiTW .content__2Qt1T {
   margin: 0 20px;
@@ -32,6 +32,11 @@
   color: #aaa;
   background-color: #ccc;
 }
+@media (max-device-width: 767px) {
+  .filter__3tSS2 {
+    padding: 10px 20px;
+  }
+}
 .button__3kyux {
   border: none;
   padding: 20px 50px;
@@ -45,6 +50,11 @@
 }
 .button__3kyux.primary__Gi0WT {
   background: #4484ce;
+}
+@media (max-device-width: 767px) {
+  .filter__3yCM8 {
+    padding: 10px 20px;
+  }
 }
 .container__qAHBU {
   background: #fff;
@@ -77,6 +87,8 @@
 }
 .filter__2VDX6 input {
   border: none;
+  border-radius: 0;
+  --webkit-appearance: none;
   border-bottom: 2px solid #4484ce;
   font-style: italic;
   font-size: 1.2em;
@@ -91,12 +103,20 @@
 .filter__2VDX6 input:focus {
   outline: none;
 }
+@media (max-device-width: 767px) {
+  .filter__2VDX6 {
+    padding: 10px;
+  }
+  .filter__2VDX6 input {
+    font-size: 1em;
+  }
+}
 .app-container__io-ty {
   width: 100%;
 }
 .app-wrapper__1LRWE {
   margin: 20px auto;
-  max-width: 800px;
+  max-width: 728px;
 }
 .app-content__29VRO {
   margin: 0 20px;
@@ -119,6 +139,11 @@ body {
   background: #d9d9d9;
   color: #333;
   font-family: 'Raleway', sans-serif;
+}
+@media (max-device-width: 767px) {
+  body {
+    font-size: 0.875em;
+  }
 }
 /*
  *  Font Awesome 4.6.3 by @davegandy - http//fontawesome.io - @fontawesome
