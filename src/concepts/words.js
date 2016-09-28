@@ -1,9 +1,11 @@
+import { map } from 'lodash/fp';
 import { List, fromJS } from 'immutable';
 import queryString from 'query-string';
 
 import { searchWords, serialize } from '../services/filters';
 
-const words = require('../suomi.json');
+const toLowerCase = s => s.toLowerCase();
+const words = map(toLowerCase)(require('../suomi.json'));
 
 const START_SEARCH = 'results/START_SEARCH';
 const SEARCH_COMPLETE = 'results/SEARCH_COMPLETE';
