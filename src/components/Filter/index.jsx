@@ -12,6 +12,7 @@ import {
   ENDS_WITH,
   CONTAINS,
   RHYMES_WITH,
+  DOUBLE_LETTER,
   DOUBLE_VOWEL,
   DOUBLE_CONSONANT,
   LENGTH_MIN,
@@ -23,40 +24,40 @@ import styles from './filter.styl';
 
 const onSingleChange = (key, callback) => e => callback(key, last(e.target.value));
 
-const Input = ({ field, value = '', onChange, styles, ...rest }) => (
+const Input = ({ field, opts = {}, onChange, styles, ...rest }) => (
   <input
     autoFocus
-    value={value}
+    value={opts[field] || ''}
     onChange={e => onChange(field, e.target.value)}
     {...rest}
   />
 );
 
 // Filter for words starting with a certain phrase
-const StartsWithFilter = CSSModules(({ opts, ...rest }) => (
+const StartsWithFilter = CSSModules(opts => (
   <div>
-    alkavat <Input field="phrase" value={opts.phrase} {...rest} />
+    alkavat <Input field="phrase" {...opts} />
   </div>
 ), styles);
 
 // Filter for words ending to a certain phrase
-const EndsWithFilter = CSSModules(({ opts, ...rest }) => (
+const EndsWithFilter = CSSModules(opts => (
   <div>
-    loppuvat <Input field="phrase" value={opts.phrase} {...rest} />
+    loppuvat <Input field="phrase" {...opts} />
   </div>
 ), styles);
 
 // Filter for words containing a certain phrase
-const ContainsFilter = CSSModules(({ opts, ...rest }) => (
+const ContainsFilter = CSSModules(opts => (
   <div>
-    sisältävät <Input field="phrase" value={opts.phrase} {...rest} />
+    sisältävät <Input field="phrase" {...opts} />
   </div>
 ), styles);
 
 // Filter for words rhyming with given word (levensthein distance 1)
-const RhymesWithFilter = CSSModules(({ opts, ...rest }) => (
+const RhymesWithFilter = CSSModules(opts => (
   <div>
-    ovat riimipareja sanan <Input field="word" value={opts.word} {...rest} /> kanssa
+    ovat riimipareja sanan <Input field="word" {...opts} /> kanssa
   </div>
 ), styles);
 
@@ -74,9 +75,16 @@ const DoubleConsonantFilter = CSSModules(() => (
   </div>
 ), styles);
 
-const LengthFilter = (label) => CSSModules(({ opts, ...rest }) => (
+// Filter for words containing two same consecutive characters
+const DoubleLetterFilter = CSSModules(opts => (
   <div>
-    {label} <Input type="number" field="length" value={opts.length} styleName="small" {...rest} /> kirjainta pitkiä
+    sisältävät jonkun kirjaimista <Input field="letters" {...opts} /> peräkkäin
+  </div>
+), styles);
+
+const LengthFilter = (label) => CSSModules(opts => (
+  <div>
+    {label} <Input type="number" field="length" styleName="small" {...opts} /> kirjainta pitkiä
   </div>
 ), styles);
 
@@ -95,6 +103,7 @@ const FILTER_MAPPING = {
   [ENDS_WITH]: <EndsWithFilter />,
   [CONTAINS]: <ContainsFilter />,
   [RHYMES_WITH]: <RhymesWithFilter />,
+  [DOUBLE_LETTER]: <DoubleLetterFilter />,
   [DOUBLE_VOWEL]: <DoubleVowelFilter />,
   [DOUBLE_CONSONANT]: <DoubleConsonantFilter />,
   [LENGTH_MIN]: <MinLengthFilter />,

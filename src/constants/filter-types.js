@@ -4,6 +4,7 @@ export const STARTS_WITH = 'STARTS_WITH';
 export const ENDS_WITH = 'ENDS_WITH';
 export const CONTAINS = 'CONTAINS';
 export const RHYMES_WITH = 'RHYMES_WITH';
+export const DOUBLE_LETTER = 'DOUBLE_LETTER';
 export const DOUBLE_VOWEL = 'DOUBLE_VOWEL';
 export const DOUBLE_CONSONANT = 'DOUBLE_CONSONANT';
 export const LENGTH_MIN = 'LENGTH_MIN';
@@ -36,14 +37,20 @@ export const FILTER_TYPES = [
     multiple: false,
   },
   {
+    type: DOUBLE_LETTER,
+    abbrevation: 't',
+    label: 'Tupla',
+    multiple: false,
+  },
+  {
     type: DOUBLE_VOWEL,
-    abbrevation: 'tv',
+    abbrevation: 'pv',
     label: 'Pitkä vokaali',
     multiple: false,
   },
   {
     type: DOUBLE_CONSONANT,
-    abbrevation: 'tk',
+    abbrevation: 'kk',
     label: 'Kaksoiskonsonantti',
     multiple: false,
   },
@@ -78,8 +85,9 @@ export const FILTER_SERIALIZERS = {
   [ENDS_WITH]: opts => opts.phrase,
   [CONTAINS]: opts => opts.phrase,
   [RHYMES_WITH]: opts => opts.phrase,
-  [DOUBLE_VOWEL]: opts => opts.letters || '',
-  [DOUBLE_CONSONANT]: opts => opts.letters || '',
+  [DOUBLE_LETTER]: opts => opts.letter || '',
+  [DOUBLE_VOWEL]: () => '',
+  [DOUBLE_CONSONANT]: () => '',
   [LENGTH_MIN]: opts => opts.length,
   [LENGTH_MAX]: opts => opts.length,
   [LENGTH_EXACT]: opts => opts.length,
@@ -90,8 +98,9 @@ export const FILTER_DESERIALIZERS = {
   [ABBREVATIONS[ENDS_WITH]]: phrase => ({ phrase }),
   [ABBREVATIONS[CONTAINS]]: phrase => ({ phrase }),
   [ABBREVATIONS[RHYMES_WITH]]: phrase => ({ phrase }),
-  [ABBREVATIONS[DOUBLE_VOWEL]]: letters => ({ letters }),
-  [ABBREVATIONS[DOUBLE_CONSONANT]]: letters => ({ letters }),
+  [ABBREVATIONS[DOUBLE_LETTER]]: letter => ({ letter }),
+  [ABBREVATIONS[DOUBLE_VOWEL]]: () => ({}),
+  [ABBREVATIONS[DOUBLE_CONSONANT]]: () => ({}),
   [ABBREVATIONS[LENGTH_MIN]]: length => ({ length: parseInt(length, 10) }),
   [ABBREVATIONS[LENGTH_MAX]]: length => ({ length: parseInt(length, 10) }),
   [ABBREVATIONS[LENGTH_EXACT]]: length => ({ length: parseInt(length, 10) }),

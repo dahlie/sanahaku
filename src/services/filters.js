@@ -10,6 +10,7 @@ import {
   ENDS_WITH,
   CONTAINS,
   RHYMES_WITH,
+  DOUBLE_LETTER,
   DOUBLE_VOWEL,
   DOUBLE_CONSONANT,
   LENGTH_MIN,
@@ -19,15 +20,19 @@ import {
 
 const reduceWithKey = fp.reduce.convert({ cap: false });
 
-const startsWith = opts => word => word.toLowerCase().startsWith(opts.phrase.toLowerCase());
-const endsWith = opts => word => word.toLowerCase().endsWith(opts.phrase.toLowerCase());
-const contains = opts => word => word.toLowerCase().indexOf(opts.phrase.toLowerCase()) !== -1;
-const rhymesWith = opts => word => new Levenshtein(word.toLowerCase(), opts.word.toLowerCase()).distance === 1;
-const doubleVowel = () => word => word.toLowerCase().match(/([aeiouyöä])\1/);
-const doubleConsonant = () => word => word.toLowerCase().match(/([bcdfghjklmnpqrstv])\1/);
-const minLength = opts => word => word.toLowerCase().length >= opts.length;
-const maxLength = opts => word => word.toLowerCase().length <= opts.length;
-const exactLength = opts => word => word.toLowerCase().length === opts.length;
+const startsWith = opts => word => word.startsWith(opts.phrase.toLowerCase());
+const endsWith = opts => word => word.endsWith(opts.phrase.toLowerCase());
+const contains = opts => word => word.indexOf(opts.phrase.toLowerCase()) !== -1;
+const rhymesWith = opts => word => new Levenshtein(word, opts.word.toLowerCase()).distance === 1;
+const doubleLetter = (opts) => {
+  const matcher = new RegExp(`([${opts.letters}])\\1`);
+  return word => word.match(matcher);
+};
+const doubleVowel = () => word => word.match(/([aeiouyöä])\1/);
+const doubleConsonant = () => word => word.match(/([bcdfghjklmnpqrstv])\1/);
+const minLength = opts => word => word.length >= opts.length;
+const maxLength = opts => word => word.length <= opts.length;
+const exactLength = opts => word => word.length === opts.length;
 
 const createPredicate = ({ type, opts }) => {
   switch (type) {
@@ -35,6 +40,7 @@ const createPredicate = ({ type, opts }) => {
     case ENDS_WITH: return endsWith(opts);
     case CONTAINS: return contains(opts);
     case RHYMES_WITH: return rhymesWith(opts);
+    case DOUBLE_LETTER: return doubleLetter(opts);
     case DOUBLE_VOWEL: return doubleVowel(opts);
     case DOUBLE_CONSONANT: return doubleConsonant(opts);
     case LENGTH_MIN: return minLength(opts);
