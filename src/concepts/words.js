@@ -12,18 +12,18 @@ const CLEAR_RESULTS = 'results/CLEAR_RESULTS';
 // Initial state
 const initialState = fromJS({
   filtering: false,
-  words: null,
+  results: null,
   url: null,
 });
 
 // Selectors
-export const getResultCount = state => state.getIn(['results', 'words', 'length'], 0);
+export const getResultCount = state => state.getIn(['words', 'results', 'length'], 0);
 
-export const getResults = state => state.getIn(['results', 'words'], new List());
+export const getResults = state => state.getIn(['words', 'results'], new List());
 
-export const getResultUrl = state => state.getIn(['results', 'url']);
+export const getResultUrl = state => state.getIn(['words', 'url']);
 
-export const isBusy = state => state.getIn(['results', 'filtering']);
+export const isBusy = state => state.getIn(['words', 'filtering']);
 
 // Reducer
 export default function reducer(state = initialState, action = {}) {
@@ -34,7 +34,7 @@ export default function reducer(state = initialState, action = {}) {
 
     case SEARCH_COMPLETE: {
       return fromJS({
-        words: action.results,
+        results: action.results,
         url: action.url,
         filtering: false,
       });

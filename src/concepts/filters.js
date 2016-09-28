@@ -3,7 +3,7 @@ import queryString from 'query-string';
 
 import { deserialize } from '../services/filters';
 
-import { filterWords } from './results';
+import { filterWords } from './words';
 
 const ADD_FILTER = 'filters/ADD_FILTER';
 const LOAD_FILTERS = 'filters/LOAD_FILTERS';

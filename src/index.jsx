@@ -9,11 +9,11 @@ import thunk from 'redux-thunk';
 import App from './containers/App';
 
 import filters from './concepts/filters';
-import results from './concepts/results';
+import words from './concepts/words';
 
 const rootReducer = combineReducers({
   filters,
-  results,
+  words,
 });
 
 require('./styles/global.styl');
