@@ -24,10 +24,13 @@ let enhancer = compose(applyMiddleware(thunk));
 // Not in production mode so activate some dev tools
 if (ENV !== 'production') {
   require('immutable-devtools')(immutable);
-  enhancer = compose(
-    applyMiddleware(thunk),
-    window.devToolsExtension && window.devToolsExtension()
-  );
+
+  if (window.devToolsExtension) {
+    enhancer = compose(
+      applyMiddleware(thunk),
+      window.devToolsExtension && window.devToolsExtension()
+    );
+  }
 }
 
 const store = createStore(rootReducer, new Map(), enhancer);

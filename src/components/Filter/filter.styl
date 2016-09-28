@@ -12,6 +12,8 @@
 
   input {
     border none
+    border-radius 0
+    --webkit-appearance none
     border-bottom 2px solid primary-color
     font-style italic
     font-size 1.2em
@@ -26,6 +28,16 @@
 
     &:focus {
       outline none
+    }
+  }
+}
+
+@media(max-device-width: 767px) {
+  .filter {
+    padding 10px
+
+    input {
+      font-size 1em
     }
   }
 }
