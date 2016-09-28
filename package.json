@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jasmine",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --host 0.0.0.0",
     "build": "NODE_ENV=production webpack --config ./webpack.production.config.js --progress",
     "deploy": "rm -rf build/ && npm run build && npm run gh-pages",
     "gh-pages": "gh-pages -d build -b gh-pages"

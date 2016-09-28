@@ -7,7 +7,7 @@ module.exports = {
 
   entry: {
     app: [
-      'webpack-dev-server/client?http://localhost:8080/',
+      'webpack-dev-server/client?http://0.0.0.0:8080/',
       'webpack/hot/only-dev-server',
       path.join(__dirname, '/src/index.jsx'),
     ],
