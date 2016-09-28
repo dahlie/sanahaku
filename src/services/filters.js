@@ -19,15 +19,15 @@ import {
 
 const reduceWithKey = fp.reduce.convert({ cap: false });
 
-const startsWith = opts => word => word.startsWith(opts.phrase);
-const endsWith = opts => word => word.endsWith(opts.phrase);
-const contains = opts => word => word.indexOf(opts.phrase) !== -1;
-const rhymesWith = opts => word => new Levenshtein(opts.word, word).distance === 1;
-const doubleVowel = () => word => word.match(/([aeiouyöä])\1/);
-const doubleConsonant = () => word => word.match(/([bcdfghjklmnpqrstv])\1/);
-const minLength = opts => word => word.length >= opts.length;
-const maxLength = opts => word => word.length <= opts.length;
-const exactLength = opts => word => word.length === opts.length;
+const startsWith = opts => word => word.toLowerCase().startsWith(opts.phrase.toLowerCase());
+const endsWith = opts => word => word.toLowerCase().endsWith(opts.phrase.toLowerCase());
+const contains = opts => word => word.toLowerCase().indexOf(opts.phrase.toLowerCase()) !== -1;
+const rhymesWith = opts => word => new Levenshtein(word.toLowerCase(), opts.word.toLowerCase()).distance === 1;
+const doubleVowel = () => word => word.toLowerCase().match(/([aeiouyöä])\1/);
+const doubleConsonant = () => word => word.toLowerCase().match(/([bcdfghjklmnpqrstv])\1/);
+const minLength = opts => word => word.toLowerCase().length >= opts.length;
+const maxLength = opts => word => word.toLowerCase().length <= opts.length;
+const exactLength = opts => word => word.toLowerCase().length === opts.length;
 
 const createPredicate = ({ type, opts }) => {
   switch (type) {
