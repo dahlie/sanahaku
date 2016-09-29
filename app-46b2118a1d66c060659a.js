@@ -5548,17 +5548,17 @@ webpackJsonp([1],[
 	};
 	var minLength = function minLength(opts) {
 	  return function (word) {
-	    return word.length >= opts.length;
+	    return word.length >= parseInt(opts.length, 10);
 	  };
 	};
 	var maxLength = function maxLength(opts) {
 	  return function (word) {
-	    return word.length <= opts.length;
+	    return word.length <= parseInt(opts.length, 10);
 	  };
 	};
 	var exactLength = function exactLength(opts) {
 	  return function (word) {
-	    return word.length === opts.length;
+	    return word.length === parseInt(opts.length, 10);
 	  };
 	};
 
