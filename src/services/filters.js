@@ -134,9 +134,9 @@ const doubleLetter = (opts) => {
 };
 const doubleVowel = () => word => word.match(/([aeiouyöä])\1/);
 const doubleConsonant = () => word => word.match(/([bcdfghjklmnpqrstv])\1/);
-const minLength = opts => word => word.length >= opts.length;
-const maxLength = opts => word => word.length <= opts.length;
-const exactLength = opts => word => word.length === opts.length;
+const minLength = opts => word => word.length >= parseInt(opts.length, 10);
+const maxLength = opts => word => word.length <= parseInt(opts.length, 10);
+const exactLength = opts => word => word.length === parseInt(opts.length, 10);
 
 const createPredicate = ({ type, opts }) => {
   switch (type) {
