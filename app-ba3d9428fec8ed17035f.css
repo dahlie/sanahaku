@@ -103,6 +103,9 @@
 .filter__2VDX6 input:focus {
   outline: none;
 }
+.filter__2VDX6 input.invalid__p14Fb {
+  border-bottom: 2px solid #f00;
+}
 @media (max-device-width: 767px) {
   .filter__2VDX6 {
     padding: 10px;
