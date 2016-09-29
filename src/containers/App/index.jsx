@@ -25,10 +25,7 @@ class App extends Component {
   }
 
   clearResults() {
-    const { results } = this.props;
-    if (results && !results.isEmpty()) {
-      this.props.clearResults();
-    }
+    this.props.clearResults();
   }
 
   @autobind
