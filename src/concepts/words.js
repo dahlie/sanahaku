@@ -2,7 +2,8 @@ import { map } from 'lodash/fp';
 import { List, fromJS } from 'immutable';
 import queryString from 'query-string';
 
-import { searchWords, serialize, validateFilters } from '../services/filters';
+import { searchWords, serialize } from '../services/filters';
+import { logQuery } from '../services/analytics';
 
 const toLowerCase = s => s.toLowerCase();
 const words = map(toLowerCase)(require('../suomi.json'));
@@ -70,6 +71,8 @@ export function filterWords(filters) {
         url: queryString.stringify(params),
       });
     }, 100);
+
+    logQuery(filters);
   };
 }
 

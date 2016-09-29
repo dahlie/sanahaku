@@ -5,12 +5,16 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import ReactGA from 'react-ga';
 
 import App from './containers/App';
 
 import filters from './concepts/filters';
 import words from './concepts/words';
 import app from './concepts/app';
+
+// Initialize Google analytics
+ReactGA.initialize('UA-85011800-1');
 
 const rootReducer = combineReducers({
   filters,

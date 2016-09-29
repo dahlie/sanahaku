@@ -193,7 +193,7 @@ export function searchWords(words, filters) {
 // #serializeFilter()
 //    Serializes filter options into a query parameter
 //
-const serializeFilter = (res, { type, opts }) => {
+export const serializeFilter = (res, { type, opts }) => {
   const { abbrevation } = find({ type })(FILTER_TYPES);
   const value = FILTER_SERIALIZERS[type](opts);
 
@@ -207,7 +207,7 @@ const serializeFilter = (res, { type, opts }) => {
 // #deserializeFilter()
 //    Deserializes filter from a query parameter
 //
-const deserializeFilter = (res, val, key) => res.concat({
+export const deserializeFilter = (res, val, key) => res.concat({
   type: findTypeByAbbrevation(key),
   opts: (FILTER_DESERIALIZERS[key] || noop)(val),
   id: res.length + 1,
