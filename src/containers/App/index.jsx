@@ -10,7 +10,7 @@ import Results from '../../components/Results';
 import Filter from '../../components/Filter';
 import Button from '../../components/Button';
 
-import { FILTER_TYPES } from '../../constants/filter-types';
+import { FILTER_TYPES } from '../../services/filters';
 
 import { addFilter, updateFilter, removeFilter, loadFilters } from '../../concepts/filters';
 import { isBusy, getResults, getResultUrl, filterWords, clearResults } from '../../concepts/words';

@@ -18,7 +18,7 @@ import {
   LENGTH_MIN,
   LENGTH_MAX,
   LENGTH_EXACT
-} from '../../constants/filter-types';
+} from '../../services/filters';
 
 import styles from './filter.styl';
 
