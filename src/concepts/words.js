@@ -2,7 +2,7 @@ import { map } from 'lodash/fp';
 import { List, fromJS } from 'immutable';
 import queryString from 'query-string';
 
-import { searchWords, serialize } from '../services/filters';
+import { searchWords, serialize, validateFilters } from '../services/filters';
 
 const toLowerCase = s => s.toLowerCase();
 const words = map(toLowerCase)(require('../suomi.json'));
@@ -53,6 +53,10 @@ export default function reducer(state = initialState, action = {}) {
 
 // Action creators
 export function filterWords(filters) {
+  if (filters.isEmpty()) {
+    return null;
+  }
+
   return (dispatch) => {
     dispatch({ type: START_SEARCH });
 

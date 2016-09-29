@@ -1,6 +1,12 @@
 import Levenshtein from 'levenshtein';
 
-import fp, { map, identity, reduce, filter, find, compact } from 'lodash/fp';
+import fp, { map, identity, reduce, find, compact, noop } from 'lodash/fp';
+import { isString } from 'lodash';
+
+const TEXT = 'text';
+const NUMBER = 'number';
+
+const reduceWithKey = fp.reduce.convert({ cap: false });
 
 export const STARTS_WITH = 'STARTS_WITH';
 export const ENDS_WITH = 'ENDS_WITH';
@@ -19,30 +25,35 @@ export const FILTER_TYPES = [
     abbrevation: 'sw',
     label: 'Alkaa',
     multiple: false,
+    fields: { phrase: TEXT },
   },
   {
     type: ENDS_WITH,
     abbrevation: 'ew',
     label: 'Loppuu',
     multiple: false,
+    fields: { phrase: TEXT },
   },
   {
     type: CONTAINS,
     abbrevation: 'c',
     label: 'Sisältää',
     multiple: false,
+    fields: { phrase: TEXT },
   },
   {
     type: RHYMES_WITH,
     abbrevation: 'r',
     label: 'Riimipari',
     multiple: false,
+    fields: { word: TEXT },
   },
   {
     type: DOUBLE_LETTER,
     abbrevation: 't',
     label: 'Tupla',
     multiple: false,
+    fields: { letters: TEXT },
   },
   {
     type: DOUBLE_VOWEL,
@@ -61,24 +72,29 @@ export const FILTER_TYPES = [
     abbrevation: 'min',
     label: 'Pituus vähintään',
     multiple: false,
+    fields: { length: NUMBER },
   },
   {
     type: LENGTH_MAX,
     abbrevation: 'max',
     label: 'Pituus enintään',
     multiple: false,
+    fields: { length: NUMBER },
   },
   {
     type: LENGTH_EXACT,
     abbrevation: 'len',
     label: 'Pituus tasan',
     multiple: false,
+    fields: { length: NUMBER },
   },
 ];
 
+export const findByType = type => find({ type })(FILTER_TYPES);
+
 export const findTypeByAbbrevation = abbrevation => find({ abbrevation })(FILTER_TYPES).type;
 
-const addAbbrevation = (res, fltr) => Object.assign(res, { [fltr.type]: filter.abbrevation });
+const addAbbrevation = (res, filter) => Object.assign(res, { [filter.type]: filter.abbrevation });
 
 export const ABBREVATIONS = reduce(addAbbrevation, {})(FILTER_TYPES);
 
@@ -107,8 +123,6 @@ export const FILTER_DESERIALIZERS = {
   [ABBREVATIONS[LENGTH_MAX]]: length => ({ length: parseInt(length, 10) }),
   [ABBREVATIONS[LENGTH_EXACT]]: length => ({ length: parseInt(length, 10) }),
 };
-
-const reduceWithKey = fp.reduce.convert({ cap: false });
 
 const startsWith = opts => word => word.startsWith(opts.phrase.toLowerCase());
 const endsWith = opts => word => word.endsWith(opts.phrase.toLowerCase());
@@ -140,12 +154,45 @@ const createPredicate = ({ type, opts }) => {
   }
 };
 
+// #isValidField()
+//    Validated a single filter option field.
+//
+const isValidField = (type, value) => {
+  switch (type) {
+    case TEXT: return isString(value) && value.length !== 0;
+    case NUMBER: return parseInt(value, 10) > 0;
+    default: return true;
+  }
+};
+
+// #validateFilter()
+//    Validates a single filter options.
+//
+const validateFilter = (filter) => {
+  const fields = findByType(filter.type).fields;
+  const valid = reduceWithKey((res, val, key) =>
+    res && isValidField(val, filter.opts[key]), true)(fields);
+  return Object.assign(filter, { valid });
+};
+
+// #validateFilters()
+//    Validates all given filters and returns an filter array containing valid: (true|false)
+//    value for each filter.
+//
+export const validateFilters = filters => map(validateFilter)(filters);
+
+// #searchWords()
+//    Filters words list with given filters.
+//
 export function searchWords(words, filters) {
   const predicates = map(createPredicate)(filters);
-  const reducer = reduce((res, predicate) => filter(predicate)(res), words);
+  const reducer = reduce((res, predicate) => fp.filter(predicate)(res), words);
   return compact(reducer(predicates));
 }
 
+// #serializeFilter()
+//    Serializes filter options into a query parameter
+//
 const serializeFilter = (res, { type, opts }) => {
   const { abbrevation } = find({ type })(FILTER_TYPES);
   const value = FILTER_SERIALIZERS[type](opts);
@@ -157,12 +204,21 @@ const serializeFilter = (res, { type, opts }) => {
   return Object.assign(res, { [abbrevation]: value });
 };
 
-const deserializeFilter = (res, val, key, id) => res.concat({
+// #deserializeFilter()
+//    Deserializes filter from a query parameter
+//
+const deserializeFilter = (res, val, key) => res.concat({
   type: findTypeByAbbrevation(key),
-  opts: FILTER_DESERIALIZERS[key](val),
-  id,
+  opts: (FILTER_DESERIALIZERS[key] || noop)(val),
+  id: res.length + 1,
 });
 
+// #serialize()
+//    Serializes given filter array into a query parameter string.
+//
 export const serialize = filters => reduce(serializeFilter, {})(filters);
 
+// #deserialize()
+//    Deserializes an filter array from a query parameter string.
+//
 export const deserialize = params => reduceWithKey(deserializeFilter, [])(params);

@@ -24,14 +24,15 @@ import styles from './filter.styl';
 
 const onSingleChange = (key, callback) => e => callback(key, last(e.target.value));
 
-const Input = ({ field, opts = {}, onChange, styles, ...rest }) => (
+const Input = CSSModules(({ field, opts = {}, onChange, styles, valid, ...rest }) => (
   <input
     autoFocus
     value={opts[field] || ''}
     onChange={e => onChange(field, e.target.value)}
+    styleName={classnames({ invalid: !valid })}
     {...rest}
   />
-);
+), styles);
 
 // Filter for words starting with a certain phrase
 const StartsWithFilter = CSSModules(opts => (
@@ -115,6 +116,7 @@ const FILTER_MAPPING = {
 class Filter extends Component {
 
   static propTypes = {
+    index: PropTypes.number.isRequired,
     filter: ImmutablePropTypes.map.isRequired,
     onChange: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired
@@ -122,14 +124,14 @@ class Filter extends Component {
 
   @autobind
   onChange(key, value) {
-    const { filter, onChange } = this.props;
-    onChange(filter, { [key]: value });
+    const { index, onChange } = this.props;
+    onChange(index, { [key]: value });
   }
 
   @autobind
   onRemoveFilter() {
-    const { filter, onRemove } = this.props;
-    onRemove(filter);
+    const { index, onRemove } = this.props;
+    onRemove(index);
   }
 
   renderFilter(filter) {

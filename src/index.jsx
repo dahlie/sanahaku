@@ -10,10 +10,12 @@ import App from './containers/App';
 
 import filters from './concepts/filters';
 import words from './concepts/words';
+import app from './concepts/app';
 
 const rootReducer = combineReducers({
   filters,
   words,
+  app
 });
 
 require('./styles/global.styl');

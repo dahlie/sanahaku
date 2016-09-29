@@ -3,49 +3,47 @@ import queryString from 'query-string';
 
 import { deserialize } from '../services/filters';
 
-import { filterWords } from './words';
-
 const ADD_FILTER = 'filters/ADD_FILTER';
 const LOAD_FILTERS = 'filters/LOAD_FILTERS';
 const REMOVE_FILTER = 'filters/REMOVE_FILTER';
 const UPDATE_FILTER = 'filters/UPDATE_FILTER';
-
-// Static counter for assigning unique IDs for filters
-let nextId = 1;
+const UPDATE_ALL = 'filters/UPDATE_ALL';
 
 // # findById()
 //    Finds filter by id
 //
 const findIndexById = (state, id) => state.findIndex(filter => filter.get('id') === id);
 
+// Initial state
 const initialState = fromJS([]);
 
-// # reducer()
+// Selectors
+//
+export const getFilters = state => state.get('filters');
+
+// Reducer
 //
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case ADD_FILTER: {
       return state.push(fromJS({
-        id: nextId++,
         type: action.filterType,
         opts: {},
+        valid: true,
       }));
     }
 
+    case UPDATE_ALL:
     case LOAD_FILTERS: {
       return fromJS(action.filters);
     }
 
     case UPDATE_FILTER: {
-      return state.update(
-        findIndexById(state, action.id),
-        filter => filter.mergeIn(['opts'], action.opts)
-      );
+      return state.update(action.index, filter => filter.mergeIn(['opts'], action.opts));
     }
 
     case REMOVE_FILTER: {
-      const index = findIndexById(state, action.id);
-      return index !== -1 ? state.splice(index, 1) : state;
+      return state.splice(action.index, 1);
     }
 
     default:
@@ -58,20 +56,23 @@ export const addFilter = type => ({
   filterType: type,
 });
 
-export const removeFilter = id => ({
+export const removeFilter = index => ({
   type: REMOVE_FILTER,
-  id,
+  index,
 });
 
-export const updateFilter = (id, opts) => ({
+export const updateFilter = (index, opts) => ({
   type: UPDATE_FILTER,
-  id,
+  index,
   opts,
 });
 
-export const loadFilters = query => (dispatch) => {
-  const filters = deserialize(queryString.parse(query));
+export const updateAll = filters => ({
+  type: UPDATE_ALL,
+  filters,
+});
 
-  dispatch({ type: LOAD_FILTERS, filters });
-  dispatch(filterWords(fromJS(filters)));
+export const loadFilters = (query) => {
+  const filters = deserialize(queryString.parse(query));
+  return { type: LOAD_FILTERS, filters };
 };
