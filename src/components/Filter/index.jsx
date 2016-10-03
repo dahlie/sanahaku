@@ -12,6 +12,8 @@ import {
   ENDS_WITH,
   CONTAINS,
   RHYMES_WITH,
+  SIMILIAR_WITH,
+  LEVENSHTEIN,
   DOUBLE_LETTER,
   DOUBLE_VOWEL,
   DOUBLE_CONSONANT,
@@ -55,10 +57,25 @@ const ContainsFilter = CSSModules(opts => (
   </div>
 ), styles);
 
-// Filter for words rhyming with given word (levensthein distance 1)
+// Filter for words rhyming with given word (levenshtein distance 1)
 const RhymesWithFilter = CSSModules(opts => (
   <div>
     ovat riimipareja sanan <Input field="word" {...opts} /> kanssa
+  </div>
+), styles);
+
+// Filter for words that are similiar with given word (levenshtein distance 2)
+const SimiliarWithFilter = CSSModules(opts => (
+  <div>
+    ovat samankaltaisia sanan <Input field="word" {...opts} /> kanssa
+  </div>
+), styles);
+
+// Filter for words with given Levenshtein distance
+const LevenshteinFilter = CSSModules(opts => (
+  <div>
+    joiden <a href="https://en.wikipedia.org/wiki/Levenshtein_distance" target="_blank">Levenshtein-etäisyys</a> sanasta <Input field="word" {...opts} />
+    on <Input field="distance" {...opts} />
   </div>
 ), styles);
 
@@ -104,6 +121,8 @@ const FILTER_MAPPING = {
   [ENDS_WITH]: <EndsWithFilter />,
   [CONTAINS]: <ContainsFilter />,
   [RHYMES_WITH]: <RhymesWithFilter />,
+  [SIMILIAR_WITH]: <SimiliarWithFilter />,
+  [LEVENSHTEIN]: <LevenshteinFilter />,
   [DOUBLE_LETTER]: <DoubleLetterFilter />,
   [DOUBLE_VOWEL]: <DoubleVowelFilter />,
   [DOUBLE_CONSONANT]: <DoubleConsonantFilter />,

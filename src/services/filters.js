@@ -11,13 +11,15 @@ const reduceWithKey = fp.reduce.convert({ cap: false });
 export const STARTS_WITH = 'STARTS_WITH';
 export const ENDS_WITH = 'ENDS_WITH';
 export const CONTAINS = 'CONTAINS';
-export const RHYMES_WITH = 'RHYMES_WITH';
 export const DOUBLE_LETTER = 'DOUBLE_LETTER';
 export const DOUBLE_VOWEL = 'DOUBLE_VOWEL';
 export const DOUBLE_CONSONANT = 'DOUBLE_CONSONANT';
 export const LENGTH_MIN = 'LENGTH_MIN';
 export const LENGTH_MAX = 'LENGTH_MAX';
 export const LENGTH_EXACT = 'LENGTH_EXACT';
+export const RHYMES_WITH = 'RHYMES_WITH';
+export const SIMILIAR_WITH = 'SIMILIAR_WITH';
+export const LEVENSHTEIN = 'LEVENSHTEIN';
 
 export const FILTER_TYPES = [
   {
@@ -40,13 +42,6 @@ export const FILTER_TYPES = [
     label: 'Sisältää',
     multiple: false,
     fields: { phrase: TEXT },
-  },
-  {
-    type: RHYMES_WITH,
-    abbrevation: 'r',
-    label: 'Riimipari',
-    multiple: false,
-    fields: { word: TEXT },
   },
   {
     type: DOUBLE_LETTER,
@@ -88,6 +83,27 @@ export const FILTER_TYPES = [
     multiple: false,
     fields: { length: NUMBER },
   },
+  {
+    type: RHYMES_WITH,
+    abbrevation: 'r',
+    label: 'Riimipari',
+    multiple: false,
+    fields: { word: TEXT },
+  },
+  {
+    type: SIMILIAR_WITH,
+    abbrevation: 'sk',
+    label: 'Samankaltainen',
+    multiple: false,
+    fields: { word: TEXT },
+  },
+  {
+    type: LEVENSHTEIN,
+    abbrevation: 'lv',
+    label: 'Levenshtein',
+    multiple: false,
+    fields: { word: TEXT, distance: NUMBER },
+  },
 ];
 
 export const findByType = type => find({ type })(FILTER_TYPES);
@@ -102,7 +118,9 @@ export const FILTER_SERIALIZERS = {
   [STARTS_WITH]: opts => opts.phrase,
   [ENDS_WITH]: opts => opts.phrase,
   [CONTAINS]: opts => opts.phrase,
-  [RHYMES_WITH]: opts => opts.phrase,
+  [RHYMES_WITH]: opts => opts.word,
+  [SIMILIAR_WITH]: opts => opts.word,
+  [LEVENSHTEIN]: opts => `${opts.word};${opts.distance}`,
   [DOUBLE_LETTER]: opts => opts.letters || '',
   [DOUBLE_VOWEL]: () => '',
   [DOUBLE_CONSONANT]: () => '',
@@ -116,6 +134,11 @@ export const FILTER_DESERIALIZERS = {
   [ABBREVATIONS[ENDS_WITH]]: phrase => ({ phrase }),
   [ABBREVATIONS[CONTAINS]]: phrase => ({ phrase }),
   [ABBREVATIONS[RHYMES_WITH]]: phrase => ({ phrase }),
+  [ABBREVATIONS[SIMILIAR_WITH]]: phrase => ({ phrase }),
+  [ABBREVATIONS[LEVENSHTEIN]]: (str) => {
+    const [word, distance] = str.split(';');
+    return { word, distance: parseInt(distance, 10) };
+  },
   [ABBREVATIONS[DOUBLE_LETTER]]: letters => ({ letters }),
   [ABBREVATIONS[DOUBLE_VOWEL]]: () => ({}),
   [ABBREVATIONS[DOUBLE_CONSONANT]]: () => ({}),
@@ -127,7 +150,8 @@ export const FILTER_DESERIALIZERS = {
 const startsWith = opts => word => word.startsWith(opts.phrase.toLowerCase());
 const endsWith = opts => word => word.endsWith(opts.phrase.toLowerCase());
 const contains = opts => word => word.indexOf(opts.phrase.toLowerCase()) !== -1;
-const rhymesWith = opts => word => new Levenshtein(word, opts.word.toLowerCase()).distance === 1;
+const levenshtein = opts => word =>
+  new Levenshtein(word, opts.word.toLowerCase()).distance === parseInt(opts.distance, 10);
 const doubleLetter = (opts) => {
   const matcher = new RegExp(`([${opts.letters}])\\1`);
   return word => word.match(matcher);
@@ -143,7 +167,9 @@ const createPredicate = ({ type, opts }) => {
     case STARTS_WITH: return startsWith(opts);
     case ENDS_WITH: return endsWith(opts);
     case CONTAINS: return contains(opts);
-    case RHYMES_WITH: return rhymesWith(opts);
+    case RHYMES_WITH: return levenshtein({ word: opts.word, distance: 1 });
+    case SIMILIAR_WITH: return levenshtein({ word: opts.word, distance: 2 });
+    case LEVENSHTEIN: return levenshtein(opts);
     case DOUBLE_LETTER: return doubleLetter(opts);
     case DOUBLE_VOWEL: return doubleVowel(opts);
     case DOUBLE_CONSONANT: return doubleConsonant(opts);
