@@ -51,11 +51,6 @@ class App extends Component {
     this.props.search(this.props.selectedFilters);
   }
 
-  @autobind
-  onSave() {
-    window.history.pushState('', '', `/?${this.props.url}`);
-  }
-
   render() {
     const { selectedFilters, results, url, isBusy } = this.props;
     const showHelp = selectedFilters.isEmpty();
@@ -89,17 +84,18 @@ class App extends Component {
               />
             )}
 
-            <Results
-              words={results}
-              currentUrl={location.search}
-              resultsUrl={url}
-              maxResults={500}
-              onSave={this.onSave}
-            />
+            <Results words={results} resultsUrl={url} maxResults={500} />
 
             {showHelp &&
-            <div>
-              <p>Aloita valitsemalla yksi tai useampi hakuehto.</p>
+              <h2>Ohjeet</h2>
+            }
+            {showHelp &&
+            <div styleName="help">
+              <p>
+                Sanahaku on palvelu, jonka avulla voit hakea suomenkielen sanoa erilaisten hakuehtojen perusteella.
+                Sana-aineistona käytetään Kotimaisten kielten keskusksen julkaisemaa <a href="http://kaino.kotus.fi/sanat/nykysuomi/" target="_blank">nykysuomen sanalistaa</a>.
+              </p>
+              <p><strong>Aloita valitsemalla yksi tai useampi hakuehto.</strong></p>
             </div>
             }
 

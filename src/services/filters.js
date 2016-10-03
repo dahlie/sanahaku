@@ -133,8 +133,8 @@ export const FILTER_DESERIALIZERS = {
   [ABBREVATIONS[STARTS_WITH]]: phrase => ({ phrase }),
   [ABBREVATIONS[ENDS_WITH]]: phrase => ({ phrase }),
   [ABBREVATIONS[CONTAINS]]: phrase => ({ phrase }),
-  [ABBREVATIONS[RHYMES_WITH]]: phrase => ({ phrase }),
-  [ABBREVATIONS[SIMILIAR_WITH]]: phrase => ({ phrase }),
+  [ABBREVATIONS[RHYMES_WITH]]: word => ({ word }),
+  [ABBREVATIONS[SIMILIAR_WITH]]: word => ({ word }),
   [ABBREVATIONS[LEVENSHTEIN]]: (str) => {
     const [word, distance] = str.split(';');
     return { word, distance: parseInt(distance, 10) };

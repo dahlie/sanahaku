@@ -3,11 +3,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { List } from 'immutable';
 import CSSModules from 'react-css-modules';
 
-import Button from '../Button';
-
 import styles from './results.styl';
 
-const Results = ({ words, maxResults, currentUrl, resultsUrl, onSave }) => {
+const Results = ({ words, maxResults, resultsUrl }) => {
   if (!words) {
     return null;
   }
@@ -15,6 +13,8 @@ const Results = ({ words, maxResults, currentUrl, resultsUrl, onSave }) => {
   if (words.isEmpty()) {
     return (<div><h2>Ei osumia</h2></div>);
   }
+
+  const url = `${window.location.origin}/?${resultsUrl}`;
 
   return (
     <div>
@@ -25,11 +25,8 @@ const Results = ({ words, maxResults, currentUrl, resultsUrl, onSave }) => {
         {words.size > maxResults && '...'}
       </div>
 
-      <div styleName="buttons">
-        {currentUrl !== resultsUrl &&
-        <Button type="primary" onClick={onSave}>Tallenna hakutulos</Button>
-        }
-        {false && <Button type="primary">Uusi haku</Button>}
+      <div styleName="link">
+        <a href={url}>Linkki tähän hakutulokseen</a>
       </div>
     </div>
   );
@@ -38,9 +35,7 @@ const Results = ({ words, maxResults, currentUrl, resultsUrl, onSave }) => {
 Results.propTypes = {
   words: ImmutablePropTypes.list,
   maxResults: PropTypes.number,
-  currentUrl: PropTypes.string,
   resultsUrl: PropTypes.string,
-  onSave: PropTypes.func.isRequired,
 };
 
 Results.defaultProps = {
