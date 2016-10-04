@@ -49,6 +49,9 @@ webpackJsonp([1],[
 	// Initialize Google analytics
 	_reactGa2.default.initialize('UA-85011800-1');
 
+	// Initialize logging
+	Raven.config('https://d165b654e05c4d379c7fd7b6a58813d7@sentry.io/103639').install();
+
 	var rootReducer = (0, _reduxImmutable.combineReducers)({
 	  filters: _filters2.default,
 	  words: _words2.default,
