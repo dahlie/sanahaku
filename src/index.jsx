@@ -16,10 +16,13 @@ import app from './concepts/app';
 // Initialize Google analytics
 ReactGA.initialize('UA-85011800-1');
 
+// Initialize logging
+Raven.config('https://d165b654e05c4d379c7fd7b6a58813d7@sentry.io/103639').install();
+
 const rootReducer = combineReducers({
   filters,
   words,
-  app
+  app,
 });
 
 require('./styles/global.styl');
